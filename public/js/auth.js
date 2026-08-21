@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Caminho relativo ajustado para app/controllers/
-            const resposta = await enviarParaPHP('../../app/controllers/LoginController.php', {
+            const resposta = await enviarParaPHP('../../app/controllers/AuthController.php', {
                 acao: 'login',
                 email: email,
                 senha: senha,
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnLogout = document.getElementById('btn-logout');
     if (btnLogout) {
         btnLogout.addEventListener('click', async () => {
-            await enviarParaPHP('../../app/controllers/LoginController.php', { acao: 'logout' });
+            await enviarParaPHP('../../app/controllers/AuthController.php', { acao: 'logout' });
             localStorage.removeItem('perfilAtivo');
             window.location.href = 'index.html';
         });
