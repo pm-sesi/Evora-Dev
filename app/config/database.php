@@ -1,63 +1,33 @@
 <?php
-// =========================================================================
-// SISGED - Sistema de Gestão Educacional Dinâmico
-// app/config/database.php - Conexão com o Banco de Dados usando PDO
-// =========================================================================
-
+/**
+ * Gerenciador de Conexão com o Banco de Dados (PDO)
+ * SISGED - Évora Dev
+ */
 class Database {
-    // Parâmetros de conexão do servidor de banco de dados (WAMP / XAMPP padrão)
-    private $host = "localhost";
-    private $db_name = "sisged";
-    private $username = "root";
-    private $password = ""; // Geralmente em branco no WAMP/XAMPP locais
-    public $conn;
+    private static $host = 'localhost';
+    private static $dbName = 'evora_sisged';
+    private static $username = 'root';
+    private static $password = '';
+    private static $conn = null;
 
-    /**
-     * Retorna a instância de conexão com o banco de dados via PDO.
-     * 
-     * @return PDO|null
-     */
-    public function getConnection() {
-        $this->conn = null;
-
-        try {
-            // DSN definindo host, nome do banco de dados e o conjunto de caracteres utf8mb4
-            $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4";
-            
-            // Configurações e opções recomendadas para conexões seguras e limpas com PDO
-            $options = [
-                // Lança exceções PDOException em caso de erros no SQL
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                // Retorna os dados como array associativo por padrão
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                // Desativa a emulação de prepared statements para maior segurança contra SQL Injection
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-            
-            // Instanciação do objeto PDO
-            $this->conn = new PDO($dsn, $this->username, $this->password, $options);
-            
-        } catch (PDOException $exception) {
-            // Em ambiente de desenvolvimento, logamos o erro detalhado.
-            // Em produção, isso garante que o usuário final não veja credenciais de acesso ou caminhos físicos.
-            error_log("Erro na Conexão SISGED: " . $exception->getMessage());
-            
-            // Interrompe a execução amigavelmente informando o erro de sistema
-            die("Desculpe, ocorreu um erro de conexão com o Banco de Dados. Detalhes salvos nos logs do sistema.");
+    public static function getConnection() {
+        if (self::$conn === null) {
+            try {
+                self::$conn = new PDO(
+                    "mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8mb4",
+                    self::$username,
+                    self::$password,
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES => false
+                    ]
+                );
+            } catch (PDOException $e) {
+                error_log("Erro de Conexão: " . $e->getMessage());
+                throw new Exception("Falha na conexão com o banco de dados.");
+            }
         }
-
-        return $this->conn;
+        return self::$conn;
     }
 }
-
-// Exemplo rápido de teste de conexão (caso executado diretamente)
-/*
-if (basename(__FILE__) == basename($_SERVER['SCRIPT_FILENAME'])) {
-    $database = new Database();
-    $db = $database->getConnection();
-    if ($db) {
-        echo "Conexão com o banco de dados 'sisged' estabelecida com sucesso!";
-    }
-}
-*/
-?>

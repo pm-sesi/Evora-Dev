@@ -1,29 +1,42 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/UsuarioModel.php';
 
-$dados = json_decode(file_get_contents('php://input'), true);
-$acao = $dados['acao'] ?? '';
+$input = json_decode(file_get_contents('php://input'), true) ?? $_POST;
+$acao = $input['acao'] ?? '';
 
 if ($acao === 'login') {
-    $email = $dados['email'] ?? '';
-    $senha = $dados['senha'] ?? '';
-    $perfil = $dados['perfil'] ?? '';
+    $email = trim($input['email'] ?? '');
+    $senha = $input['senha'] ?? '';
+    $perfil = $input['perfil'] ?? null;
 
-    $model = new UsuarioModel();
-    $usuario = $model->buscarPorEmail($email);
-
-    if ($usuario && password_verify($senha, $usuario['senha']) && $usuario['perfil'] === $perfil) {
-        session_start();
-        $_SESSION['usuario'] = $usuario;
-        echo json_encode(['sucesso' => true, 'mensagem' => 'Login realizado com sucesso!']);
-    } else {
-        echo json_encode(['sucesso' => false, 'mensagem' => 'Credenciais inválidas.']);
+    if (empty($email) || empty($senha)) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Por favor, informe e-mail e senha.']);
+        exit;
     }
-} elseif ($acao === 'logout') {
-    session_start();
-    session_destroy();
-    echo json_encode(['sucesso' => true]);
-} else {
-    echo json_encode(['sucesso' => false, 'mensagem' => 'Ação inválida.']);
+
+    try {
+        $model = new UsuarioModel();
+        $usuario = $model->autenticar($email, $senha, $perfil);
+
+        if ($usuario) {
+            $_SESSION['usuario'] = $usuario;
+            echo json_encode(['sucesso' => true, 'usuario' => $usuario]);
+        } else {
+            echo json_encode(['sucesso' => false, 'mensagem' => 'Credenciais inválidas.']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no servidor: ' . $e->getMessage()]);
+    }
+    exit;
 }
+
+if ($acao === 'logout') {
+    unset($_SESSION['usuario']);
+    session_destroy();
+    echo json_encode(['sucesso' => true, 'mensagem' => 'Sessão encerrada com sucesso.']);
+    exit;
+}
+
+echo json_encode(['sucesso' => false, 'mensagem' => 'Ação inválida.']);
