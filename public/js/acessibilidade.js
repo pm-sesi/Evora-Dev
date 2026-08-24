@@ -1,49 +1,32 @@
 /**
- * Descrição: Gerencia a ativação e persistência do Modo Escuro e Modo Daltônico.
+ * Gerencia o estado e persistência dos modos de acessibilidade (Escuro e Daltônico)
  */
-
 document.addEventListener('DOMContentLoaded', () => {
-    const btnModoEscuro = document.getElementById('btn-modo-escuro');
-    const btnModoDaltonico = document.getElementById('btn-modo-daltonico');
+    const btnModoEscuro = document.getElementById('btn-modo-escuro'); //[cite: 22]
+    const btnModoDaltonico = document.getElementById('btn-modo-daltonico'); //[cite: 22]
 
-    // 1. Carrega as preferências salvas pelo usuário no localStorage
-    const modoEscuroSalvo = localStorage.getItem('modoEscuro') === 'true';
-    const modoDaltonicoSalvo = localStorage.getItem('modoDaltonico') === 'true';
+    const modoEscuroSalvo = localStorage.getItem('modoEscuro') === 'true'; //[cite: 22]
+    const modoDaltonicoSalvo = localStorage.getItem('modoDaltonico') === 'true'; //[cite: 22]
 
-    if (modoEscuroSalvo) {
-        document.body.classList.add('modo-escuro');
-    }
+    if (modoEscuroSalvo) document.body.classList.add('modo-escuro'); //[cite: 22]
+    if (modoDaltonicoSalvo) document.body.classList.add('modo-daltonico'); //[cite: 22]
 
-    if (modoDaltonicoSalvo) {
-        document.body.classList.add('modo-daltonico');
-    }
-
-    // 2. Evento para o botão de Modo Escuro (btn-modo-escuro)
     if (btnModoEscuro) {
         btnModoEscuro.addEventListener('click', () => {
-            const estaAtivo = document.body.classList.toggle('modo-escuro');
-            localStorage.setItem('modoEscuro', estaAtivo);
-
+            const estaAtivo = document.body.classList.toggle('modo-escuro'); //[cite: 22]
+            localStorage.setItem('modoEscuro', estaAtivo); //[cite: 22]
             if (typeof exibirToast === 'function') {
-                exibirToast(
-                    estaAtivo ? "Modo Escuro ativado." : "Modo Escuro desativado.",
-                    "sucesso"
-                );
+                exibirToast(estaAtivo ? "Modo Escuro ativado." : "Modo Escuro desativado.", "sucesso"); //[cite: 22]
             }
         });
     }
 
-    // 3. Evento para o botão de Modo Daltônico (btn-modo-daltonico)
     if (btnModoDaltonico) {
         btnModoDaltonico.addEventListener('click', () => {
-            const estaAtivo = document.body.classList.toggle('modo-daltonico');
-            localStorage.setItem('modoDaltonico', estaAtivo);
-
+            const estaAtivo = document.body.classList.toggle('modo-daltonico'); //[cite: 22]
+            localStorage.setItem('modoDaltonico', estaAtivo); //[cite: 22]
             if (typeof exibirToast === 'function') {
-                exibirToast(
-                    estaAtivo ? "Modo Daltônico ativado." : "Modo Daltônico desativado.",
-                    "sucesso"
-                );
+                exibirToast(estaAtivo ? "Modo Daltônico ativado." : "Modo Daltônico desativado.", "sucesso"); //[cite: 22]
             }
         });
     }

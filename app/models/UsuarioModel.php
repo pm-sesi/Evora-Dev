@@ -1,18 +1,38 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+/**
+ * Model para Autenticação e Controle de Acesso
+ */
+require_once __DIR__ . '/Database.php';
 
 class UsuarioModel {
-    private $conn;
+    private $db;
 
     public function __construct() {
-        $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->db = Database::getConnection();
     }
 
-    public function buscarPorEmail($email) {
-        $stmt = $this->conn->prepare("SELECT * FROM usuarios WHERE email = :email");
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
-        return $stmt->fetch();
+    public function autenticar($email, $senha, $perfil = null) {
+        $sql = "SELECT id, nome, email, senha, perfil FROM usuarios WHERE email = :email";
+        
+        if ($perfil) {
+            $sql .= " AND perfil = :perfil";
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $params = [':email' => $email];
+        
+        if ($perfil) {
+            $params[':perfil'] = $perfil;
+        }
+
+        $stmt->execute($params);
+        $usuario = $stmt->fetch();
+
+        if ($usuario && (password_verify($senha, $usuario['senha']) || $senha === $usuario['senha'])) {
+            unset($usuario['senha']);
+            return $usuario;
+        }
+
+        return false;
     }
 }

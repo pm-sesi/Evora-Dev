@@ -1,9 +1,15 @@
+-- =========================================================================
+-- SISGED - Sistema de Gestão Educacional Dinâmico
+-- schema.sql - Estrutura do Banco de Dados (Corrigido)
+-- =========================================================================
+
 CREATE DATABASE IF NOT EXISTS `sisged` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `sisged`;
 
 -- Tabela de Usuários (Login)
 CREATE TABLE IF NOT EXISTS `usuarios` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `nome` VARCHAR(100) NOT NULL,
     `email` VARCHAR(100) NOT NULL UNIQUE,
     `senha` VARCHAR(255) NOT NULL,
     `perfil` VARCHAR(50) NOT NULL,
@@ -39,8 +45,8 @@ CREATE TABLE IF NOT EXISTS `turmas` (
     `data_inicio` DATE NOT NULL,
     `data_fim` DATE NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`instrutor_id`) REFERENCES `instrutores`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`instrutor_id`) REFERENCES `instrutores`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tabela de Aulas (Agendamentos)
@@ -54,10 +60,10 @@ CREATE TABLE IF NOT EXISTS `aulas` (
     `hora_fim` TIME NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`turma_id`) REFERENCES `turmas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`instrutor_id`) REFERENCES `instrutores`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (`instrutor_id`) REFERENCES `instrutores`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `usuarios` (`email`, `senha`, `perfil`) VALUES
-('admin@sisged.com', '$2y$10$e0MYzXyjpJS7Pd0RVvHwHe11.45T5kX0F/zZkE.R4Qf.0g1YdZ', 'Coordenação');
--- Nota: A hash acima corresponde à senha '123456'
+-- Inserção de Usuário Administrador Inicial
+INSERT INTO `usuarios` (`nome`, `email`, `senha`, `perfil`) VALUES
+('Coordenador Geral', 'admin@sisged.com', '$2y$10$usesomesillystringforeYRrmbU.5AgmgdJEjfEDkxfL4uBOCS2e', 'Coordenação');

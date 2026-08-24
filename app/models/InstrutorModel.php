@@ -1,22 +1,35 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+/**
+ * Model de Gerenciamento de Instrutores
+ */
+require_once __DIR__ . '/Database.php';
 
 class InstrutorModel {
-    private $conn;
+    private $db;
 
     public function __construct() {
-        $db = new Database();
-        $this->conn = $db->getConnection();
+        $this->db = Database::getConnection();
     }
 
-    public function cadastrar($nome, $cpf, $email, $especialidades) {
-        $sql = "INSERT INTO instrutores (nome, cpf, email, especialidades) VALUES (:nome, :cpf, :email, :especialidades)";
-        $stmt = $this->conn->prepare($sql);
+    public function listar() {
+        $stmt = $this->db->query("SELECT id, nome, cpf, email, especialidades FROM instrutores ORDER BY nome ASC");
+        return $stmt->fetchAll();
+    }
+
+    public function cadastrar($dados) {
+        $sql = "INSERT INTO instrutores (nome, cpf, email, especialidades) 
+                VALUES (:nome, :cpf, :email, :especialidades)";
+        $stmt = $this->db->prepare($sql);
         return $stmt->execute([
-            ':nome' => $nome,
-            ':cpf' => $cpf,
-            ':email' => $email,
-            ':especialidades' => $especialidades
+            ':nome' => $dados['nome'],
+            ':cpf' => $dados['cpf'],
+            ':email' => $dados['email'],
+            ':especialidades' => $dados['especialidades'] ?? null
         ]);
+    }
+
+    public function deletar($id) {
+        $stmt = $this->db->prepare("DELETE FROM instrutores WHERE id = :id");
+        return $stmt->execute([':id' => $id]);
     }
 }

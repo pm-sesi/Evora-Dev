@@ -1,39 +1,58 @@
-
 /**
- * Função para centralizar todas as requisições ao PHP (Controllers)
+ * integracao.js - Camada Central de Integração e Funções Utilitárias
+ * SISGED - Évora Dev
  */
-async function enviarParaPHP(urlController, dados) {
+
+const API_BASE_URL = '../../app/controllers/'; 
+
+function escapeHTML(str) { 
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+async function enviarParaPHP(controller, dados = {}) {
     try {
-        const resposta = await fetch(urlController, {
+        // Extrai apenas o nome do arquivo controller caso venha com caminho relativo
+        const nomeController = controller.split('/').pop();
+        const resposta = await fetch(`${API_BASE_URL}${nomeController}`, { 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(dados)
         });
-        
-        return await resposta.json(); // O PHP deve retornar um JSON válido
+
+        if (!resposta.ok) {
+            throw new Error(`Falha no servidor: HTTP ${resposta.status}`); 
+        }
+
+        return await resposta.json(); 
     } catch (erro) {
-        console.error("Erro na requisição:", erro);
-        exibirToast("Erro de comunicação com o servidor.", "erro");
-        return null;
+        console.error(`[Integracao] Erro em ${controller}:`, erro); 
+        throw erro;
     }
 }
 
-/**
- * Exibe mensagens na tela usando o ID 'toast-mensagem'
- */
-function exibirToast(mensagem, tipo = "sucesso") {
-    const toast = document.getElementById('toast-mensagem');
-    if (toast) {
-        toast.textContent = mensagem;
-        toast.classList.add('mostrar');
-        if (tipo === "erro") toast.classList.add('erro');
-        
-        setTimeout(() => {
-            toast.classList.remove('mostrar', 'erro');
-        }, 3000);
-    } else {
-        alert(mensagem); // Fallback caso o HTML ainda não possua o container do Toast
+function exibirToast(mensagem, tipo = 'sucesso') { 
+    let toastEl = document.getElementById('toast');
+
+    if (!toastEl) {
+        toastEl = document.createElement('div');
+        toastEl.id = 'toast';
+        toastEl.className = 'toast';
+        document.body.appendChild(toastEl);
     }
+
+    toastEl.textContent = mensagem;
+    toastEl.classList.remove('mostrar', 'erro', 'sucesso');
+    toastEl.classList.add('mostrar', tipo === 'erro' ? 'erro' : 'sucesso');
+
+    setTimeout(() => {
+        toastEl.classList.remove('mostrar');
+    }, 3000);
 }
