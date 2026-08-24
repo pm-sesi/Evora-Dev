@@ -1,0 +1,310 @@
+==========================================================
+PREMISSAS DO TRABALHO
+PROJETO DE DESENVOLVIMENTO DE SISTEMA WEB
+==========================================================
+
+ACESSO LOCAL(Apenas rede SENAI): 10.31.1.2
+LOGIN: csoliveira
+SENHA: sENAI@2022
+
+OBJETIVO
+
+Desenvolver um Sistema Web utilizando os conhecimentos adquiridos durante a disciplina, aplicando boas práticas de desenvolvimento, gerenciamento de projetos e trabalho em equipe.
+
+==========================================================
+1. TECNOLOGIAS OBRIGATÓRIAS
+==========================================================
+
+O projeto deverá utilizar:
+
+- HTML
+- CSS
+- JavaScript
+- PHP
+- MySQL
+
+==========================================================
+2. BOAS PRÁTICAS DE DESENVOLVIMENTO
+==========================================================
+
+O projeto deverá seguir obrigatoriamente as seguintes práticas:
+
+- Organização estrutural dos arquivos.
+- Uso correto da semântica HTML.
+- Desenvolvimento Responsivo (Mobile First).
+- Acessibilidade seguindo as recomendações WCAG.
+- Otimização para mecanismos de busca (SEO).
+- Código organizado, padronizado e documentado.
+
+==========================================================
+3. ARQUITETURA DO PROJETO
+==========================================================
+
+Recomenda-se utilizar uma das seguintes arquiteturas:
+
+- MVC (Model-View-Controller)
+ou
+- Arquitetura em 3 Camadas (3-Tier Architecture)
+
+Objetivo:
+
+Separar claramente:
+
+- Interface (View)
+- Regras de negócio (Controller)
+- Acesso aos dados (Model)
+
+Evite misturar HTML, PHP e SQL no mesmo arquivo.
+
+==========================================================
+4. FLUXO DA APLICAÇÃO
+==========================================================
+
+1. O usuário realiza uma ação na interface (HTML/JavaScript).
+
+2. A requisição é enviada ao Controller (PHP).
+
+3. O Controller solicita ao Model as informações necessárias.
+
+4. O Model executa as consultas no banco de dados (MySQL).
+
+5. O resultado retorna ao Controller.
+
+6. O Controller envia os dados para a View.
+
+7. A interface é atualizada para o usuário.
+
+==========================================================
+5. ORGANIZAÇÃO DO CÓDIGO
+==========================================================
+
+NÃO faça consultas SQL diretamente dentro dos arquivos HTML.
+
+Evite códigos como:
+
+SELECT *
+INSERT
+UPDATE
+DELETE
+
+misturados na interface.
+
+Toda consulta ao banco deve ficar exclusivamente nos arquivos Model.
+
+Nos arquivos HTML/PHP utilize apenas:
+
+- Exibição de variáveis.
+- Estruturas simples de repetição.
+- Estruturas simples de condição.
+
+Isso torna o sistema mais organizado, reutilizável e fácil de manter.
+
+==========================================================
+6. GERENCIAMENTO DO PROJETO
+==========================================================
+
+A equipe deverá utilizar a metodologia ágil Scrum.
+
+As atividades deverão ser organizadas em um quadro Kanban utilizando uma ferramenta como:
+
+- Trello
+- Jira
+- GitHub Projects
+
+Cada tarefa deve possuir:
+
+- Quem fará.
+- O que será feito.
+- Prazo.
+- Status.
+
+Exemplos de status:
+
+- A Fazer
+- Em Andamento
+- Em Revisão
+- Concluído
+
+==========================================================
+7. REPOSITÓRIO GITHUB
+==========================================================
+
+Todo o projeto deverá estar armazenado em um único repositório GitHub.
+
+O repositório deverá ser compartilhado com:
+
+- Todos os integrantes do grupo.
+- O professor.
+
+ATENÇÃO
+
+Código que não está no GitHub será considerado como inexistente.
+
+==========================================================
+8. IDENTIDADE VISUAL
+==========================================================
+
+O sistema deverá possuir identidade visual própria inspirada nas cores institucionais da FIEMG.
+
+Pesquise os sites oficiais da instituição para utilizar como referência.
+
+==========================================================
+9. DIVISÃO DAS RESPONSABILIDADES (SCRUM)
+==========================================================
+
+Antes de iniciar qualquer desenvolvimento, a equipe deverá:
+
+- Definir os papéis.
+- Elaborar uma Matriz RACI.
+
+Responsabilidades sugeridas:
+
+Product Owner / UI-UX Designer
+
+Responsável por:
+
+- Protótipos
+- Wireframes
+- HTML
+- CSS
+- Experiência do usuário
+
+------------------------------------------
+
+Desenvolvedor Front-end
+
+Responsável por:
+
+- JavaScript
+- Validações
+- Integração entre interface e PHP
+
+------------------------------------------
+
+Desenvolvedor Back-end
+
+Responsável por:
+
+- PHP
+- Regras de negócio
+- Login
+- Sessões
+- Processamento dos dados
+
+------------------------------------------
+
+Administrador de Banco de Dados (DBA)
+
+Responsável por:
+
+- MER
+- DER
+- Modelagem do banco
+- Criação das tabelas
+- Consultas SQL
+
+==========================================================
+10. RESPONSABILIDADE INDIVIDUAL
+==========================================================
+
+Todos devem colaborar com o projeto.
+
+Entretanto, cada integrante será responsável pela qualidade da camada sob sua responsabilidade.
+
+Exemplo:
+
+Problemas no banco de dados serão de responsabilidade do DBA.
+
+Isso garante uma avaliação individual justa.
+
+==========================================================
+11. DAILY MEETING
+==========================================================
+
+Em todas as próximas aulas será realizada uma Daily Meeting.
+
+Cada integrante deverá responder:
+
+1. O que foi feito desde a última aula?
+
+2. O que será feito hoje?
+
+3. Existe algum impedimento?
+
+Exemplos:
+
+- Finalizei o formulário de cadastro.
+- Hoje implementarei o login.
+- Estou com dificuldades na conexão com o banco de dados.
+
+==========================================================
+12. CONTRATO DE EQUIPE
+==========================================================
+
+Cada grupo deverá elaborar e assinar um Contrato de Time contendo, no mínimo:
+
+- Canal oficial de comunicação.
+- Prazo máximo para responder mensagens.
+- Procedimento caso algum integrante deixe de cumprir suas responsabilidades.
+
+==========================================================
+13. CRITÉRIOS DE AVALIAÇÃO
+==========================================================
+
+Nota Final
+
+50%
+
+Entrega do Sistema (PBL)
+
++
+
+50%
+
+Defesa Individual
+
+Durante a apresentação, qualquer integrante poderá ser questionado sobre a parte pela qual foi responsável.
+
+Exemplo:
+
+"Mostre onde está a consulta SQL deste formulário e explique como o PHP processa esses dados."
+
+Caso o estudante não consiga explicar sua própria implementação, sua nota individual poderá ser reduzida.
+
+Os demais integrantes não serão prejudicados caso tenham cumprido corretamente suas responsabilidades.
+
+==========================================================
+14. RESUMO DAS OBRIGAÇÕES
+==========================================================
+
+✓ Utilizar HTML, CSS, JavaScript, PHP e MySQL.
+
+✓ Desenvolver utilizando Mobile First.
+
+✓ Aplicar semântica HTML.
+
+✓ Garantir acessibilidade.
+
+✓ Aplicar SEO.
+
+✓ Organizar o projeto em MVC ou Arquitetura em 3 Camadas.
+
+✓ Não misturar SQL com HTML.
+
+✓ Utilizar Scrum.
+
+✓ Gerenciar tarefas com Kanban.
+
+✓ Utilizar GitHub durante todo o desenvolvimento.
+
+✓ Definir papéis da equipe.
+
+✓ Elaborar a Matriz RACI.
+
+✓ Participar das Daily Meetings.
+
+✓ Assinar o Contrato de Time.
+
+✓ Defender individualmente sua parte do projeto.
+
+==========================================================
