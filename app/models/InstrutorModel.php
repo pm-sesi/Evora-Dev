@@ -2,7 +2,7 @@
 /**
  * Model de Gerenciamento de Instrutores
  */
-require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/../config/database.php';
 
 class InstrutorModel {
     private $db;

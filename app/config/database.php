@@ -5,7 +5,7 @@
  */
 class Database {
     private static $host = 'localhost';
-    private static $dbName = 'evora_sisged';
+    private static $dbName = 'sisged';
     private static $username = 'root';
     private static $password = '';
     private static $conn = null;

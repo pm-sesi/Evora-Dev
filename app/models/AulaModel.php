@@ -2,7 +2,7 @@
 /**
  * Model de Gerenciamento e Agendamento de Aulas
  */
-require_once __DIR__ . '/Database.php';
+require_once __DIR__ . '/../config/database.php';
 
 class AulaModel {
     private $db;
