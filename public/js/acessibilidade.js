@@ -11,10 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
     if (modoEscuroSalvo) document.body.classList.add('modo-escuro'); //[cite: 22]
     if (modoDaltonicoSalvo) document.body.classList.add('modo-daltonico'); //[cite: 22]
 
+    // WCAG 4.1.2 (Nome, Função, Valor): botões de alternância precisam
+    // expor o estado atual (pressionado/não pressionado) para leitores de tela,
+    // não apenas mudar visualmente a classe do <body>.
+    if (btnModoEscuro) btnModoEscuro.setAttribute('aria-pressed', String(modoEscuroSalvo));
+    if (btnModoDaltonico) btnModoDaltonico.setAttribute('aria-pressed', String(modoDaltonicoSalvo));
+
     if (btnModoEscuro) {
         btnModoEscuro.addEventListener('click', () => {
             const estaAtivo = document.body.classList.toggle('modo-escuro'); //[cite: 22]
             localStorage.setItem('modoEscuro', estaAtivo); //[cite: 22]
+            btnModoEscuro.setAttribute('aria-pressed', String(estaAtivo));
             if (typeof exibirToast === 'function') {
                 exibirToast(estaAtivo ? "Modo Escuro ativado." : "Modo Escuro desativado.", "sucesso"); //[cite: 22]
             }
@@ -25,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnModoDaltonico.addEventListener('click', () => {
             const estaAtivo = document.body.classList.toggle('modo-daltonico'); //[cite: 22]
             localStorage.setItem('modoDaltonico', estaAtivo); //[cite: 22]
+            btnModoDaltonico.setAttribute('aria-pressed', String(estaAtivo));
             if (typeof exibirToast === 'function') {
                 exibirToast(estaAtivo ? "Modo Daltônico ativado." : "Modo Daltônico desativado.", "sucesso"); //[cite: 22]
             }

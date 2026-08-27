@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/AulaModel.php';
 
@@ -33,6 +35,35 @@ if ($acao === 'cadastrar') {
         echo json_encode([
             'sucesso' => $sucesso,
             'mensagem' => $sucesso ? 'Aula agendada com sucesso!' : 'Erro ao agendar aula.'
+        ]);
+    } catch (Exception $e) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);
+    }
+    exit;
+}
+
+if ($acao === 'atualizar') {
+    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] !== 'Coordenação') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Acesso negado: Permissão insuficiente.']);
+        exit;
+    }
+
+    $id = $input['id'] ?? null;
+    if (!$id) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'ID da aula não fornecido.']);
+        exit;
+    }
+
+    if (empty($input['turma_id']) || empty($input['instrutor_id']) || empty($input['sala_id']) || empty($input['data']) || empty($input['hora_inicio']) || empty($input['hora_fim'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os dados da aula.']);
+        exit;
+    }
+
+    try {
+        $sucesso = $model->atualizar($id, $input);
+        echo json_encode([
+            'sucesso' => $sucesso,
+            'mensagem' => $sucesso ? 'Aula atualizada com sucesso!' : 'Erro ao atualizar aula.'
         ]);
     } catch (Exception $e) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);

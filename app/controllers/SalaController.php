@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/SalaModel.php';
 
@@ -33,6 +35,35 @@ if ($acao === 'cadastrar') {
         echo json_encode([
             'sucesso' => $sucesso,
             'mensagem' => $sucesso ? 'Sala cadastrada com sucesso!' : 'Erro ao cadastrar sala.'
+        ]);
+    } catch (Exception $e) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);
+    }
+    exit;
+}
+
+if ($acao === 'atualizar') {
+    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] !== 'Coordenação') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Acesso negado: Permissão insuficiente.']);
+        exit;
+    }
+
+    $id = $input['id'] ?? null;
+    if (!$id) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'ID da sala não fornecido.']);
+        exit;
+    }
+
+    if (empty($input['nome']) || empty($input['capacidade'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha o nome e a capacidade da sala.']);
+        exit;
+    }
+
+    try {
+        $sucesso = $model->atualizar($id, $input);
+        echo json_encode([
+            'sucesso' => $sucesso,
+            'mensagem' => $sucesso ? 'Sala atualizada com sucesso!' : 'Erro ao atualizar sala.'
         ]);
     } catch (Exception $e) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);

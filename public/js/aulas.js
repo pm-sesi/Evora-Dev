@@ -62,11 +62,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${escapeHTML(a.sala_nome || a.sala_id)}</td>
                 <td>${escapeHTML(a.data)}</td>
                 <td>${escapeHTML(a.hora_inicio)} - ${escapeHTML(a.hora_fim)}</td>
-                ${ehCoordenacao ? `<td><button class="btn-deletar" data-id="${a.id}">Excluir</button></td>` : ''}
+                ${ehCoordenacao ? `<td>
+                    <button class="btn-editar" data-id="${escapeHTML(a.id)}" data-turma_id="${escapeHTML(a.turma_id)}" data-instrutor_id="${escapeHTML(a.instrutor_id)}" data-sala_id="${escapeHTML(a.sala_id)}" data-data="${escapeHTML(a.data)}" data-hora_inicio="${escapeHTML(a.hora_inicio)}" data-hora_fim="${escapeHTML(a.hora_fim)}">Editar</button>
+                    <button class="btn-deletar" data-id="${escapeHTML(a.id)}">Excluir</button>
+                </td>` : ''}
             </tr>
         `).join(''); //[cite: 23]
 
         anexarEventosExclusao(tabelaElement); //[cite: 23]
+        anexarEventosEdicao(tabelaElement); //[cite: 23]
     }
 
     function anexarEventosExclusao(tabelaElement) {
@@ -86,26 +90,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function anexarEventosEdicao(tabelaElement) {
+        tabelaElement.querySelectorAll('.btn-editar').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const alvo = e.target;
+                const campoId = document.getElementById('aula-id');
+                if (campoId) campoId.value = alvo.getAttribute('data-id');
+                if (document.getElementById('aula-turma-id')) document.getElementById('aula-turma-id').value = alvo.getAttribute('data-turma_id');
+                if (document.getElementById('aula-instrutor-id')) document.getElementById('aula-instrutor-id').value = alvo.getAttribute('data-instrutor_id');
+                if (document.getElementById('aula-sala-id')) document.getElementById('aula-sala-id').value = alvo.getAttribute('data-sala_id');
+                if (document.getElementById('aula-data')) document.getElementById('aula-data').value = alvo.getAttribute('data-data');
+                if (document.getElementById('aula-hora-inicio')) document.getElementById('aula-hora-inicio').value = alvo.getAttribute('data-hora_inicio');
+                if (document.getElementById('aula-hora-fim')) document.getElementById('aula-hora-fim').value = alvo.getAttribute('data-hora_fim');
+
+                const botaoSubmit = formAula?.querySelector('button[type="submit"]');
+                if (botaoSubmit) botaoSubmit.textContent = 'Salvar Alterações';
+                formAula?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    }
+
     if (formAula) {
         formAula.addEventListener('submit', async (evento) => {
             evento.preventDefault();
+            const idEdicao = document.getElementById('aula-id')?.value;
+            const emEdicao = !!idEdicao;
+
             const dados = {
-                acao: 'cadastrar',
+                acao: emEdicao ? 'atualizar' : 'cadastrar',
                 turma_id: document.getElementById('aula-turma-id').value,
                 instrutor_id: document.getElementById('aula-instrutor-id').value,
                 sala_id: document.getElementById('aula-sala-id').value,
                 data: document.getElementById('aula-data').value,
                 hora_inicio: document.getElementById('aula-hora-inicio').value,
                 hora_fim: document.getElementById('aula-hora-fim').value
-            }; //[cite: 23]
+            };
+            if (emEdicao) dados.id = idEdicao;
 
             const resposta = await enviarParaPHP('AulaController.php', dados); //[cite: 23]
             if (resposta && resposta.sucesso) {
                 exibirToast(resposta.mensagem, "sucesso"); //[cite: 23]
                 formAula.reset(); //[cite: 23]
+                if (document.getElementById('aula-id')) document.getElementById('aula-id').value = '';
+                const botaoSubmit = formAula.querySelector('button[type="submit"]');
+                if (botaoSubmit) botaoSubmit.textContent = 'Agendar Aula';
                 carregarAulas(); //[cite: 23]
             } else {
-                exibirToast(resposta?.mensagem || "Erro ao agendar.", "erro"); //[cite: 23]
+                exibirToast(resposta?.mensagem || (emEdicao ? "Erro ao atualizar." : "Erro ao agendar."), "erro"); //[cite: 23]
             }
         });
     }

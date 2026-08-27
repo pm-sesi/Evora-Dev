@@ -26,6 +26,21 @@ class SalaModel {
         ]);
     }
 
+    public function atualizar($id, $dados) {
+        $sql = "UPDATE salas
+                SET nome = :nome,
+                    capacidade = :capacidade,
+                    tipo = :tipo
+                WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':nome' => $dados['nome'],
+            ':capacidade' => $dados['capacidade'],
+            ':tipo' => $dados['tipo'] ?? null
+        ]);
+    }
+
     public function deletar($id) {
         $stmt = $this->db->prepare("DELETE FROM salas WHERE id = :id");
         return $stmt->execute([':id' => $id]);

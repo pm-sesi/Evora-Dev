@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/InstrutorModel.php';
 
@@ -33,6 +35,35 @@ if ($acao === 'cadastrar') {
         echo json_encode([
             'sucesso' => $sucesso,
             'mensagem' => $sucesso ? 'Instrutor cadastrado com sucesso!' : 'Erro ao cadastrar instrutor.'
+        ]);
+    } catch (Exception $e) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);
+    }
+    exit;
+}
+
+if ($acao === 'atualizar') {
+    if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['perfil'] !== 'Coordenação') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Acesso negado: Permissão insuficiente.']);
+        exit;
+    }
+
+    $id = $input['id'] ?? null;
+    if (!$id) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'ID do instrutor não fornecido.']);
+        exit;
+    }
+
+    if (empty($input['nome']) || empty($input['cpf']) || empty($input['email'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha os campos obrigatórios.']);
+        exit;
+    }
+
+    try {
+        $sucesso = $model->atualizar($id, $input);
+        echo json_encode([
+            'sucesso' => $sucesso,
+            'mensagem' => $sucesso ? 'Instrutor atualizado com sucesso!' : 'Erro ao atualizar instrutor.'
         ]);
     } catch (Exception $e) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Erro no banco de dados.']);

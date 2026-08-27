@@ -45,6 +45,11 @@ function exibirToast(mensagem, tipo = 'sucesso') {
         toastEl = document.createElement('div');
         toastEl.id = 'toast';
         toastEl.className = 'toast';
+        // WCAG: garante que leitores de tela anunciem a mensagem
+        // assim que ela for inserida no DOM, sem exigir foco manual.
+        toastEl.setAttribute('role', 'status');
+        toastEl.setAttribute('aria-live', 'polite');
+        toastEl.setAttribute('aria-atomic', 'true');
         document.body.appendChild(toastEl);
     }
 

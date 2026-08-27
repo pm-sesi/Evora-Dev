@@ -37,6 +37,27 @@ class AulaModel {
         ]);
     }
 
+    public function atualizar($id, $dados) {
+        $sql = "UPDATE aulas
+                SET turma_id = :turma_id,
+                    instrutor_id = :instrutor_id,
+                    sala_id = :sala_id,
+                    data = :data,
+                    hora_inicio = :hora_inicio,
+                    hora_fim = :hora_fim
+                WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':turma_id' => $dados['turma_id'],
+            ':instrutor_id' => $dados['instrutor_id'],
+            ':sala_id' => $dados['sala_id'],
+            ':data' => $dados['data'],
+            ':hora_inicio' => $dados['hora_inicio'],
+            ':hora_fim' => $dados['hora_fim']
+        ]);
+    }
+
     public function deletar($id) {
         $stmt = $this->db->prepare("DELETE FROM aulas WHERE id = :id");
         return $stmt->execute([':id' => $id]);

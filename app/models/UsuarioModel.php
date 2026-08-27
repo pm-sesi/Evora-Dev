@@ -28,7 +28,7 @@ class UsuarioModel {
         $stmt->execute($params);
         $usuario = $stmt->fetch();
 
-        if ($usuario && (password_verify($senha, $usuario['senha']) || $senha === $usuario['senha'])) {
+        if ($usuario && password_verify($senha, $usuario['senha'])) {
             unset($usuario['senha']);
             return $usuario;
         }
