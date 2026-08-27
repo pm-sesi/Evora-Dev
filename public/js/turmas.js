@@ -43,11 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${escapeHTML(t.instrutor_nome || t.instrutor_id)}</td>
                     <td>${escapeHTML(t.sala_nome || t.sala_id)}</td>
                     <td>${escapeHTML(t.data_inicio)} até ${escapeHTML(t.data_fim)}</td>
-                    ${ehCoordenacao ? `<td><button class="btn-deletar" data-id="${t.id}">Excluir</button></td>` : ''}
+                    ${ehCoordenacao ? `<td>
+                        <button class="btn-editar" data-id="${escapeHTML(t.id)}" data-codigo="${escapeHTML(t.codigo)}" data-periodo="${escapeHTML(t.periodo)}" data-instrutor_id="${escapeHTML(t.instrutor_id)}" data-sala_id="${escapeHTML(t.sala_id)}" data-data_inicio="${escapeHTML(t.data_inicio)}" data-data_fim="${escapeHTML(t.data_fim)}">Editar</button>
+                        <button class="btn-deletar" data-id="${escapeHTML(t.id)}">Excluir</button>
+                    </td>` : ''}
                 </tr>
             `).join(''); //[cite: 29]
 
             anexarEventosExclusao(); //[cite: 29]
+            anexarEventosEdicao(); //[cite: 29]
         }
     }
 
@@ -69,26 +73,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function anexarEventosEdicao() {
+        if (!tabela) return;
+        tabela.querySelectorAll('.btn-editar').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const alvo = e.target;
+                const campoId = document.getElementById('turma-id');
+                if (campoId) campoId.value = alvo.getAttribute('data-id');
+                if (document.getElementById('turma-codigo')) document.getElementById('turma-codigo').value = alvo.getAttribute('data-codigo');
+                if (document.getElementById('turma-periodo')) document.getElementById('turma-periodo').value = alvo.getAttribute('data-periodo');
+                if (document.getElementById('turma-instrutor-id')) document.getElementById('turma-instrutor-id').value = alvo.getAttribute('data-instrutor_id');
+                if (document.getElementById('turma-sala-id')) document.getElementById('turma-sala-id').value = alvo.getAttribute('data-sala_id');
+                if (document.getElementById('turma-data-inicio')) document.getElementById('turma-data-inicio').value = alvo.getAttribute('data-data_inicio');
+                if (document.getElementById('turma-data-fim')) document.getElementById('turma-data-fim').value = alvo.getAttribute('data-data_fim');
+
+                const botaoSubmit = formTurma?.querySelector('button[type="submit"]');
+                if (botaoSubmit) botaoSubmit.textContent = 'Salvar Alterações';
+                formTurma?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    }
+
     if (formTurma) {
         formTurma.addEventListener('submit', async (evento) => {
             evento.preventDefault();
+            const idEdicao = document.getElementById('turma-id')?.value;
+            const emEdicao = !!idEdicao;
+
             const dados = {
-                acao: 'cadastrar',
+                acao: emEdicao ? 'atualizar' : 'cadastrar',
                 codigo: document.getElementById('turma-codigo').value.trim(),
                 periodo: document.getElementById('turma-periodo').value,
                 instrutor_id: document.getElementById('turma-instrutor-id').value,
                 sala_id: document.getElementById('turma-sala-id').value,
                 data_inicio: document.getElementById('turma-data-inicio').value,
                 data_fim: document.getElementById('turma-data-fim').value
-            }; //[cite: 29]
+            };
+            if (emEdicao) dados.id = idEdicao;
 
             const resposta = await enviarParaPHP('TurmaController.php', dados); //[cite: 29]
             if (resposta && resposta.sucesso) {
                 exibirToast(resposta.mensagem, "sucesso"); //[cite: 29]
                 formTurma.reset(); //[cite: 29]
+                if (document.getElementById('turma-id')) document.getElementById('turma-id').value = '';
+                const botaoSubmit = formTurma.querySelector('button[type="submit"]');
+                if (botaoSubmit) botaoSubmit.textContent = 'Cadastrar Turma';
                 carregarTurmas(); //[cite: 29]
             } else {
-                exibirToast(resposta?.mensagem || "Erro ao cadastrar.", "erro"); //[cite: 29]
+                exibirToast(resposta?.mensagem || (emEdicao ? "Erro ao atualizar." : "Erro ao cadastrar."), "erro"); //[cite: 29]
             }
         });
     }

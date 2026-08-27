@@ -36,6 +36,27 @@ class TurmaModel {
         ]);
     }
 
+    public function atualizar($id, $dados) {
+        $sql = "UPDATE turmas
+                SET codigo = :codigo,
+                    periodo = :periodo,
+                    instrutor_id = :instrutor_id,
+                    sala_id = :sala_id,
+                    data_inicio = :data_inicio,
+                    data_fim = :data_fim
+                WHERE id = :id";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $id,
+            ':codigo' => $dados['codigo'],
+            ':periodo' => $dados['periodo'],
+            ':instrutor_id' => $dados['instrutor_id'],
+            ':sala_id' => $dados['sala_id'],
+            ':data_inicio' => $dados['data_inicio'],
+            ':data_fim' => $dados['data_fim']
+        ]);
+    }
+
     public function deletar($id) {
         $stmt = $this->db->prepare("DELETE FROM turmas WHERE id = :id");
         return $stmt->execute([':id' => $id]);
