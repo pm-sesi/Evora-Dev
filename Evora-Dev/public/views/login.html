@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar | SISGED — Sistema de Gestão Educacional Dinâmico</title>
+  <meta name="description" content="Acesse o SISGED, o sistema de gestão de turmas, salas, instrutores e aulas do SENAI/FIEMG.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="tela-login">
+
+  <a class="link-pular" href="#form-login">Pular para o formulário de login</a>
+
+  <main class="login-envolucro">
+    <div class="login-cartao">
+      <div class="login-marca">
+        <span class="marca-selo" aria-hidden="true">SG</span>
+        <div>
+          <strong>SISGED</strong>
+          <span>Sistema de Gestão Educacional Dinâmico</span>
+        </div>
+      </div>
+
+      <h1 class="sr-only">Entrar no SISGED</h1>
+
+      <form id="form-login" novalidate>
+        <div class="campo">
+          <label for="login-email">E-mail</label>
+          <input
+            type="email"
+            id="login-email"
+            name="email"
+            autocomplete="username"
+            placeholder="nome@senai.br"
+            required
+            aria-describedby="msg-login-erro">
+        </div>
+
+        <div class="campo">
+          <label for="login-senha">Senha</label>
+          <input
+            type="password"
+            id="login-senha"
+            name="senha"
+            autocomplete="current-password"
+            placeholder="Digite sua senha"
+            required
+            aria-describedby="msg-login-erro">
+        </div>
+
+        <div class="campo">
+          <label for="login-perfil">Perfil de acesso</label>
+          <select id="login-perfil" name="perfil">
+            <option value="">Selecione seu perfil</option>
+            <option value="Aluno">Aluno</option>
+            <option value="Instrutor">Instrutor</option>
+            <option value="Coordenação">Coordenação</option>
+          </select>
+          <span class="campo-dica">A Coordenação tem acesso completo de cadastro, edição e exclusão.</span>
+        </div>
+
+        <div
+          id="msg-login-erro"
+          class="mensagem-erro"
+          role="alert"
+          aria-live="assertive"></div>
+
+        <div class="acoes-formulario">
+          <button type="submit" id="btn-login" class="botao botao-primario">Entrar</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <p class="login-rodape-info">SENAI / FIEMG / SESI — Acesso restrito a usuários cadastrados.</p>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../js/integracao.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>

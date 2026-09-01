@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instrutores | SISGED — Sistema de Gestão Educacional Dinâmico</title>
+  <meta name="description" content="Cadastro e gerenciamento de instrutores do SISGED: dados de contato e especialidades.">
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <a class="link-pular" href="#conteudo-principal">Pular para o conteúdo</a>
+
+  <header class="cabecalho">
+    <div class="cabecalho-topo">
+      <a class="marca" href="turmas.html">
+        <span class="marca-selo" aria-hidden="true">SG</span>
+        <span class="marca-texto">
+          <strong>SISGED</strong>
+          <span>Gestão Educacional Dinâmica</span>
+        </span>
+      </a>
+      <div class="cabecalho-acoes">
+        <button type="button" id="btn-modo-escuro" class="botao-icone" aria-pressed="false">
+          <span aria-hidden="true">🌙</span><span class="sr-only">Alternar modo escuro</span>
+        </button>
+        <button type="button" id="btn-modo-daltonico" class="botao-icone" aria-pressed="false">
+          <span aria-hidden="true">◐</span><span class="sr-only">Alternar modo daltônico</span>
+        </button>
+        <button type="button" id="btn-logout" class="botao botao-secundario">Sair</button>
+      </div>
+    </div>
+    <nav class="navegacao-principal" aria-label="Navegação principal">
+      <ul>
+        <li><a href="turmas.html">Turmas</a></li>
+        <li><a href="aulas.html">Aulas</a></li>
+        <li><a href="salas.html">Salas</a></li>
+        <li><a href="instrutores.html" aria-current="page">Instrutores</a></li>
+        <li><a href="relatorios.html">Relatórios</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="conteudo-principal" class="conteudo">
+    <div class="cabecalho-pagina">
+      <div>
+        <h1>Instrutores</h1>
+        <p>Cadastre os instrutores responsáveis pelas turmas e aulas.</p>
+      </div>
+      <span class="rodape-perfil">Acesso conforme perfil ativo</span>
+    </div>
+
+    <div class="grade-principal">
+      <section class="painel" aria-labelledby="titulo-form-instrutor">
+        <h2 id="titulo-form-instrutor">Novo instrutor</h2>
+        <p class="painel-descricao">Somente a Coordenação pode cadastrar, editar ou excluir instrutores.</p>
+
+        <form id="form-instrutor" novalidate>
+          <input type="hidden" id="instrutor-id" name="id">
+
+          <div class="campo">
+            <label for="instrutor-nome">Nome completo</label>
+            <input type="text" id="instrutor-nome" name="nome" placeholder="Ex.: Carla Souza Oliveira" required>
+          </div>
+
+          <div class="campo">
+            <label for="instrutor-cpf">CPF</label>
+            <input type="text" id="instrutor-cpf" name="cpf" inputmode="numeric" placeholder="000.000.000-00" required>
+          </div>
+
+          <div class="campo">
+            <label for="instrutor-email">E-mail</label>
+            <input type="email" id="instrutor-email" name="email" autocomplete="email" placeholder="nome@senai.br" required>
+          </div>
+
+          <div class="campo">
+            <label for="instrutor-especialidades">Especialidades</label>
+            <textarea id="instrutor-especialidades" name="especialidades" rows="3" placeholder="Ex.: Desenvolvimento Web, Banco de Dados"></textarea>
+          </div>
+
+          <div class="acoes-formulario">
+            <button type="submit" id="btn-salvar-instrutor" class="botao botao-primario">Cadastrar Instrutor</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="painel" aria-labelledby="titulo-tabela-instrutores">
+        <div class="tabela-toolbar">
+          <h2 id="titulo-tabela-instrutores">Instrutores cadastrados</h2>
+          <div class="campo-busca">
+            <label for="input-busca-tabela">Buscar</label>
+            <input type="search" id="input-busca-tabela" placeholder="Filtrar por nome ou especialidade...">
+          </div>
+        </div>
+
+        <div class="tabela-wrapper">
+          <table id="tabela-instrutores">
+            <caption class="sr-only">Lista de instrutores cadastrados, com CPF, e-mail e especialidades</caption>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">CPF</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Especialidades</th>
+                <th scope="col"><span class="sr-only">Ações</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6" class="estado-vazio">Carregando instrutores…</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="modal-confirmar-exclusao" class="modal-fundo" role="alertdialog" aria-modal="true" aria-labelledby="modal-titulo-exclusao" hidden>
+    <div class="modal-caixa">
+      <h2 id="modal-titulo-exclusao">Confirmar exclusão</h2>
+      <p>Esta ação não poderá ser desfeita. Deseja realmente excluir este registro?</p>
+      <div class="modal-acoes">
+        <button type="button" id="btn-cancelar-exclusao" class="botao botao-contorno">Cancelar</button>
+        <button type="button" id="btn-confirmar-exclusao" class="botao botao-primario">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="rodape">SISGED — Évora Dev · SENAI / FIEMG / SESI</footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="../js/integracao.js"></script>
+  <script src="../js/permissoes.js"></script>
+  <script src="../js/acessibilidade.js"></script>
+  <script src="../js/instrutores.js"></script>
+</body>
+</html>
