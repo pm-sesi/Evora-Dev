@@ -67,3 +67,16 @@ CREATE TABLE IF NOT EXISTS `aulas` (
 -- Inserção de Usuário Administrador Inicial
 INSERT INTO `usuarios` (`nome`, `email`, `senha`, `perfil`) VALUES
 ('Coordenador Geral', 'admin@sisged.com', '$2y$10$usesomesillystringforeYRrmbU.5AgmgdJEjfEDkxfL4uBOCS2e', 'Coordenação');
+
+-- Cria o usuário aceitando conexões por localhost e por IP
+CREATE USER IF NOT EXISTS 'sisged_admin'@'localhost' IDENTIFIED BY 'evoradev123';
+CREATE USER IF NOT EXISTS 'sisged_admin'@'127.0.0.1' IDENTIFIED BY 'evoradev123';
+
+-- Liberar acesso total ao banco sisged
+GRANT ALL PRIVILEGES ON sisged.* TO 'sisged_admin'@'localhost';
+GRANT ALL PRIVILEGES ON sisged.* TO 'sisged_admin'@'127.0.0.1';
+
+-- Aplicar alterações
+FLUSH PRIVILEGES;
+
+SELECT User, Host FROM mysql.user WHERE User = 'sisged_admin';

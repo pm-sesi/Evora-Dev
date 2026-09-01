@@ -45,8 +45,6 @@ function exibirToast(mensagem, tipo = 'sucesso') {
         toastEl = document.createElement('div');
         toastEl.id = 'toast';
         toastEl.className = 'toast';
-        // WCAG: garante que leitores de tela anunciem a mensagem
-        // assim que ela for inserida no DOM, sem exigir foco manual.
         toastEl.setAttribute('role', 'status');
         toastEl.setAttribute('aria-live', 'polite');
         toastEl.setAttribute('aria-atomic', 'true');
@@ -61,3 +59,25 @@ function exibirToast(mensagem, tipo = 'sucesso') {
         toastEl.classList.remove('mostrar');
     }, 3000);
 }
+
+// Escuta o clique no botão de logout quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+    const btnLogout = document.getElementById('btn-logout');
+
+    if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+            try {
+                // Utiliza a função utilitária enviarParaPHP já existente no projeto
+                const dados = await enviarParaPHP('AuthController.php', { acao: 'logout' });
+
+                if (dados.sucesso) {
+                    window.location.href = 'login.html';
+                } else {
+                    alert('Não foi possível encerrar a sessão.');
+                }
+            } catch (erro) {
+                console.error('Erro ao realizar logout:', erro);
+            }
+        });
+    }
+});

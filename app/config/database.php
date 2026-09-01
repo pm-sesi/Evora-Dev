@@ -3,20 +3,19 @@
  * Gerenciador de Conexão com o Banco de Dados (PDO)
  * SISGED - Évora Dev
  */
+
+require_once __DIR__ . '/config.php';
+
 class Database {
-    private static $host = 'localhost';
-    private static $dbName = 'sisged';
-    private static $username = 'root';
-    private static $password = '';
     private static $conn = null;
 
     public static function getConnection() {
         if (self::$conn === null) {
             try {
                 self::$conn = new PDO(
-                    "mysql:host=" . self::$host . ";dbname=" . self::$dbName . ";charset=utf8mb4",
-                    self::$username,
-                    self::$password,
+                    "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
+                    DB_USER,
+                    DB_PASS,
                     [
                         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

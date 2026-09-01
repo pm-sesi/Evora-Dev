@@ -5,7 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/UsuarioModel.php';
 
-$input = json_decode(file_get_contents('php://input'), true) ?? $_POST;
+$jsonInput = json_decode(file_get_contents('php://input'), true);
+$input = is_array($jsonInput) ? $jsonInput : $_REQUEST;
 $acao = $input['acao'] ?? '';
 
 if ($acao === 'login') {
