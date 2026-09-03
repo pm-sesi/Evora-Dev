@@ -10,6 +10,11 @@ $acao = $input['acao'] ?? '';
 $model = new AulaModel();
 
 if ($acao === 'listar') {
+    if (!isset($_SESSION['usuario'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Acesso negado: faça login para continuar.']);
+        exit;
+    }
+
     try {
         $dados = $model->listar();
         echo json_encode(['sucesso' => true, 'dados' => $dados]);
@@ -96,6 +101,11 @@ if ($acao === 'deletar') {
 }
 
 if ($acao === 'gerar_relatorio') {
+    if (!isset($_SESSION['usuario'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Acesso negado: faça login para continuar.']);
+        exit;
+    }
+
     try {
         $dados = $model->gerarRelatorio($input);
         echo json_encode(['sucesso' => true, 'dados' => $dados]);
