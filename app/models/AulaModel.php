@@ -23,6 +23,49 @@ class AulaModel {
         return $stmt->fetchAll();
     }
 
+    /**
+     * Verifica se a aula proposta conflita com outra já existente,
+     * seja pelo mesmo instrutor ou pela mesma sala no mesmo intervalo de horário.
+     * Retorna 'instrutor', 'sala' ou null (sem conflito).
+     */
+    public function existeConflito($dados, $idExcluir = null) {
+        $sql = "SELECT id, instrutor_id, sala_id
+                FROM aulas
+                WHERE data = :data
+                  AND hora_inicio < :hora_fim
+                  AND hora_fim > :hora_inicio
+                  AND (instrutor_id = :instrutor_id OR sala_id = :sala_id)";
+
+        $params = [
+            ':data' => $dados['data'],
+            ':hora_inicio' => $dados['hora_inicio'],
+            ':hora_fim' => $dados['hora_fim'],
+            ':instrutor_id' => $dados['instrutor_id'],
+            ':sala_id' => $dados['sala_id']
+        ];
+
+        if ($idExcluir) {
+            $sql .= " AND id != :id_excluir";
+            $params[':id_excluir'] = $idExcluir;
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        $conflitos = $stmt->fetchAll();
+
+        foreach ($conflitos as $c) {
+            if ($c['instrutor_id'] == $dados['instrutor_id']) {
+                return 'instrutor';
+            }
+        }
+        foreach ($conflitos as $c) {
+            if ($c['sala_id'] == $dados['sala_id']) {
+                return 'sala';
+            }
+        }
+        return null;
+    }
+
     public function cadastrar($dados) {
         $sql = "INSERT INTO aulas (turma_id, instrutor_id, sala_id, data, hora_inicio, hora_fim) 
                 VALUES (:turma_id, :instrutor_id, :sala_id, :data, :hora_inicio, :hora_fim)";
@@ -93,6 +136,19 @@ class AulaModel {
         if (!empty($filtros['turma_id'])) {
             $sql .= " AND a.turma_id = :turma_id";
             $params[':turma_id'] = $filtros['turma_id'];
+        }
+        if (!empty($filtros['periodo'])) {
+            switch ($filtros['periodo']) {
+                case 'Manhã':
+                    $sql .= " AND a.hora_inicio < '12:00:00'";
+                    break;
+                case 'Tarde':
+                    $sql .= " AND a.hora_inicio >= '12:00:00' AND a.hora_inicio < '18:00:00'";
+                    break;
+                case 'Noite':
+                    $sql .= " AND a.hora_inicio >= '18:00:00'";
+                    break;
+            }
         }
 
         $sql .= " ORDER BY a.data ASC, a.hora_inicio ASC";

@@ -537,11 +537,11 @@ table .btn-editar {
 table .btn-editar:hover { background: var(--azul-600); color: var(--branco); }
 
 table .btn-deletar {
-  background: var(--vermelho-100);
-  color: var(--vermelho-600);
-  border-color: var(--vermelho-600);
+  background: var(--cor-erro-bg);
+  color: var(--cor-erro);
+  border-color: var(--cor-erro);
 }
-table .btn-deletar:hover { background: var(--vermelho-600); color: var(--branco); }
+table .btn-deletar:hover { background: var(--cor-erro); color: var(--branco); }
 
 .tabela-toolbar {
   display: flex;

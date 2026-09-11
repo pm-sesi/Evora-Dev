@@ -97,4 +97,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     carregarSalas(); //[cite: 28]
+    ativarBuscaTabela('tabela-salas', 'input-busca-tabela');
 });

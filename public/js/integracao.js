@@ -38,6 +38,26 @@ async function enviarParaPHP(controller, dados = {}) {
     }
 }
 
+/**
+ * Liga um campo de busca (input#idInput) a uma tabela (table#idTabela),
+ * escondendo as linhas do <tbody> que não contêm o termo digitado.
+ * Funciona mesmo quando a tabela é recarregada depois (o listener fica no input).
+ */
+function ativarBuscaTabela(idTabela, idInput) {
+    const input = document.getElementById(idInput);
+    const tabela = document.getElementById(idTabela);
+    if (!input || !tabela) return;
+
+    input.addEventListener('input', () => {
+        const termo = input.value.trim().toLowerCase();
+        const linhas = tabela.querySelectorAll('tbody tr');
+        linhas.forEach(linha => {
+            const texto = linha.textContent.toLowerCase();
+            linha.style.display = (!termo || texto.includes(termo)) ? '' : 'none';
+        });
+    });
+}
+
 function exibirToast(mensagem, tipo = 'sucesso') { 
     let toastEl = document.getElementById('toast');
 

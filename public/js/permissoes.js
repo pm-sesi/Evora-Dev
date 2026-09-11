@@ -9,12 +9,33 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    if (perfilAtivo !== 'Coordenação') { //[cite: 27]
-        // Esconde formulários de cadastro
-        const forms = document.querySelectorAll('form[id^="form-"]:not(#form-filtro-relatorio)'); //[cite: 27]
-        forms.forEach(form => form.style.display = 'none'); //[cite: 27]
+    const PAGINAS_RESTRITAS = ['turmas.html', 'aulas.html', 'salas.html', 'instrutores.html'];
+    const paginaAtual = window.location.pathname.split('/').pop();
 
-        // Esconde botões de salvamento e exclusão
+    if (perfilAtivo !== 'Coordenação') { //[cite: 27]
+        // Aluno e Instrutor só têm acesso à aba Consultas: some os outros links do menu
+        document.querySelectorAll('.navegacao-principal a').forEach(link => {
+            const href = link.getAttribute('href');
+            if (PAGINAS_RESTRITAS.includes(href)) {
+                const item = link.closest('li');
+                (item || link).style.display = 'none';
+            }
+        });
+
+        // E se a pessoa tentar acessar uma dessas páginas direto pela URL, manda para Consultas
+        if (PAGINAS_RESTRITAS.includes(paginaAtual)) {
+            window.location.href = 'consultas.html';
+            return;
+        }
+
+        // Esconde o painel inteiro (título, descrição e formulário) de cadastro
+        const forms = document.querySelectorAll('form[id^="form-"]:not(#form-filtro-relatorio)'); //[cite: 27]
+        forms.forEach(form => {
+            const painel = form.closest('.painel');
+            (painel || form).style.display = 'none';
+        });
+
+        // Esconde botões de salvamento e exclusão que porventura fiquem fora de um painel de cadastro
         const botoesAcao = document.querySelectorAll('button[id^="btn-salvar"], button[id^="btn-confirmar-exclusao"], .btn-deletar'); //[cite: 27]
         botoesAcao.forEach(btn => btn.style.display = 'none'); //[cite: 27]
     }

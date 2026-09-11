@@ -30,8 +30,18 @@ if ($acao === 'cadastrar') {
         exit;
     }
 
-    if (empty($input['codigo']) || empty($input['periodo']) || empty($input['instrutor_id']) || empty($input['sala_id'])) {
+    if (empty($input['codigo']) || empty($input['periodo']) || empty($input['sala_id'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os campos obrigatórios da turma.']);
+        exit;
+    }
+
+    if (empty($input['data_inicio']) || empty($input['data_fim'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Informe a vigência (data de início e término) da turma.']);
+        exit;
+    }
+
+    if ($model->existeConflito($input)) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Esta sala já está reservada para outra turma nesse período e nessa vigência.']);
         exit;
     }
 
@@ -59,8 +69,18 @@ if ($acao === 'atualizar') {
         exit;
     }
 
-    if (empty($input['codigo']) || empty($input['periodo']) || empty($input['instrutor_id']) || empty($input['sala_id'])) {
+    if (empty($input['codigo']) || empty($input['periodo']) || empty($input['sala_id'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os campos obrigatórios da turma.']);
+        exit;
+    }
+
+    if (empty($input['data_inicio']) || empty($input['data_fim'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Informe a vigência (data de início e término) da turma.']);
+        exit;
+    }
+
+    if ($model->existeConflito($input, $id)) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Esta sala já está reservada para outra turma nesse período e nessa vigência.']);
         exit;
     }
 

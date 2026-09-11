@@ -100,4 +100,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     carregarInstrutores(); //[cite: 25]
+    ativarBuscaTabela('tabela-instrutores', 'input-busca-tabela');
 });

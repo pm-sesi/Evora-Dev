@@ -40,12 +40,10 @@ CREATE TABLE IF NOT EXISTS `turmas` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `codigo` VARCHAR(50) NOT NULL UNIQUE,
     `periodo` VARCHAR(50) NOT NULL,
-    `instrutor_id` INT NOT NULL,
     `sala_id` INT NOT NULL,
     `data_inicio` DATE NOT NULL,
     `data_fim` DATE NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (`instrutor_id`) REFERENCES `instrutores`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 

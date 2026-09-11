@@ -6,16 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabela = document.getElementById('tabela-turmas');
 
     async function carregarOpcoesSelects() {
-        const selectInstrutor = document.getElementById('turma-instrutor-id');
         const selectSala = document.getElementById('turma-sala-id');
-
-        if (selectInstrutor) {
-            const resInst = await enviarParaPHP('InstrutorController.php', { acao: 'listar' }); //[cite: 29]
-            if (resInst && resInst.sucesso) {
-                selectInstrutor.innerHTML = '<option value="">Selecione um Instrutor</option>' + 
-                    resInst.dados.map(i => `<option value="${i.id}">${escapeHTML(i.nome)}</option>`).join(''); //[cite: 29]
-            }
-        }
 
         if (selectSala) {
             const resSalas = await enviarParaPHP('SalaController.php', { acao: 'listar' }); //[cite: 29]
@@ -40,11 +31,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${escapeHTML(t.id)}</td>
                     <td>${escapeHTML(t.codigo)}</td>
                     <td>${escapeHTML(t.periodo)}</td>
-                    <td>${escapeHTML(t.instrutor_nome || t.instrutor_id)}</td>
                     <td>${escapeHTML(t.sala_nome || t.sala_id)}</td>
                     <td>${escapeHTML(t.data_inicio)} até ${escapeHTML(t.data_fim)}</td>
                     ${ehCoordenacao ? `<td>
-                        <button class="btn-editar" data-id="${escapeHTML(t.id)}" data-codigo="${escapeHTML(t.codigo)}" data-periodo="${escapeHTML(t.periodo)}" data-instrutor_id="${escapeHTML(t.instrutor_id)}" data-sala_id="${escapeHTML(t.sala_id)}" data-data_inicio="${escapeHTML(t.data_inicio)}" data-data_fim="${escapeHTML(t.data_fim)}">Editar</button>
+                        <button class="btn-editar" data-id="${escapeHTML(t.id)}" data-codigo="${escapeHTML(t.codigo)}" data-periodo="${escapeHTML(t.periodo)}" data-sala_id="${escapeHTML(t.sala_id)}" data-data_inicio="${escapeHTML(t.data_inicio)}" data-data_fim="${escapeHTML(t.data_fim)}">Editar</button>
                         <button class="btn-deletar" data-id="${escapeHTML(t.id)}">Excluir</button>
                     </td>` : ''}
                 </tr>
@@ -82,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (campoId) campoId.value = alvo.getAttribute('data-id');
                 if (document.getElementById('turma-codigo')) document.getElementById('turma-codigo').value = alvo.getAttribute('data-codigo');
                 if (document.getElementById('turma-periodo')) document.getElementById('turma-periodo').value = alvo.getAttribute('data-periodo');
-                if (document.getElementById('turma-instrutor-id')) document.getElementById('turma-instrutor-id').value = alvo.getAttribute('data-instrutor_id');
                 if (document.getElementById('turma-sala-id')) document.getElementById('turma-sala-id').value = alvo.getAttribute('data-sala_id');
                 if (document.getElementById('turma-data-inicio')) document.getElementById('turma-data-inicio').value = alvo.getAttribute('data-data_inicio');
                 if (document.getElementById('turma-data-fim')) document.getElementById('turma-data-fim').value = alvo.getAttribute('data-data_fim');
@@ -104,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 acao: emEdicao ? 'atualizar' : 'cadastrar',
                 codigo: document.getElementById('turma-codigo').value.trim(),
                 periodo: document.getElementById('turma-periodo').value,
-                instrutor_id: document.getElementById('turma-instrutor-id').value,
                 sala_id: document.getElementById('turma-sala-id').value,
                 data_inicio: document.getElementById('turma-data-inicio').value,
                 data_fim: document.getElementById('turma-data-fim').value
@@ -127,4 +115,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     carregarOpcoesSelects(); //[cite: 29]
     carregarTurmas(); //[cite: 29]
+    ativarBuscaTabela('tabela-turmas', 'input-busca-tabela');
 });
