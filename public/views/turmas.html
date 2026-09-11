@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Turmas | SISGED — Sistema de Gestão Educacional Dinâmico</title>
-  <meta name="description" content="Cadastro e gerenciamento de turmas do SISGED: vincule instrutor, sala e período letivo.">
+  <meta name="description" content="Cadastro e gerenciamento de turmas do SISGED: vincule sala e período letivo.">
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -37,7 +37,7 @@
         <li><a href="aulas.html">Aulas</a></li>
         <li><a href="salas.html">Salas</a></li>
         <li><a href="instrutores.html">Instrutores</a></li>
-        <li><a href="relatorios.html">Relatórios</a></li>
+        <li><a href="consultas.html">Consultas</a></li>
       </ul>
     </nav>
   </header>
@@ -46,7 +46,7 @@
     <div class="cabecalho-pagina">
       <div>
         <h1>Turmas</h1>
-        <p>Cadastre turmas e vincule instrutor, sala e período letivo.</p>
+        <p>Cadastre turmas e vincule sala e período letivo.</p>
       </div>
       <span class="rodape-perfil">Acesso conforme perfil ativo</span>
     </div>
@@ -71,13 +71,7 @@
               <option value="Manhã">Manhã</option>
               <option value="Tarde">Tarde</option>
               <option value="Noite">Noite</option>
-            </select>
-          </div>
-
-          <div class="campo">
-            <label for="turma-instrutor-id">Instrutor responsável</label>
-            <select id="turma-instrutor-id" name="instrutor_id" required>
-              <option value="">Selecione um Instrutor</option>
+              <option value="Integral">Integral</option>
             </select>
           </div>
 
@@ -110,19 +104,18 @@
           <h2 id="titulo-tabela-turmas">Turmas cadastradas</h2>
           <div class="campo-busca">
             <label for="input-busca-tabela">Buscar</label>
-            <input type="search" id="input-busca-tabela" placeholder="Filtrar por código, instrutor ou sala...">
+            <input type="search" id="input-busca-tabela" placeholder="Filtrar por código ou sala...">
           </div>
         </div>
 
         <div class="tabela-wrapper">
           <table id="tabela-turmas">
-            <caption class="sr-only">Lista de turmas cadastradas, com instrutor, sala, período e vigência</caption>
+            <caption class="sr-only">Lista de turmas cadastradas, com sala, período e vigência</caption>
             <thead>
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Código</th>
                 <th scope="col">Período</th>
-                <th scope="col">Instrutor</th>
                 <th scope="col">Sala</th>
                 <th scope="col">Vigência</th>
                 <th scope="col"><span class="sr-only">Ações</span></th>
@@ -130,7 +123,7 @@
             </thead>
             <tbody>
               <tr>
-                <td colspan="7" class="estado-vazio">Carregando turmas…</td>
+                <td colspan="6" class="estado-vazio">Carregando turmas…</td>
               </tr>
             </tbody>
           </table>

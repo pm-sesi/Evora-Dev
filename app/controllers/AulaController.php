@@ -35,6 +35,16 @@ if ($acao === 'cadastrar') {
         exit;
     }
 
+    $conflito = $model->existeConflito($input);
+    if ($conflito === 'instrutor') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Este instrutor já possui outra aula agendada nesse horário.']);
+        exit;
+    }
+    if ($conflito === 'sala') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Esta sala já está ocupada por outra aula nesse horário.']);
+        exit;
+    }
+
     try {
         $sucesso = $model->cadastrar($input);
         echo json_encode([
@@ -61,6 +71,16 @@ if ($acao === 'atualizar') {
 
     if (empty($input['turma_id']) || empty($input['instrutor_id']) || empty($input['sala_id']) || empty($input['data']) || empty($input['hora_inicio']) || empty($input['hora_fim'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os dados da aula.']);
+        exit;
+    }
+
+    $conflito = $model->existeConflito($input, $id);
+    if ($conflito === 'instrutor') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Este instrutor já possui outra aula agendada nesse horário.']);
+        exit;
+    }
+    if ($conflito === 'sala') {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Esta sala já está ocupada por outra aula nesse horário.']);
         exit;
     }
 

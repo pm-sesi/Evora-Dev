@@ -1,5 +1,5 @@
 /**
- * Gerenciamento do agendamento de Aulas e geração de Relatórios
+ * Gerenciamento do agendamento de Aulas e da tela de Consultas
  */
 document.addEventListener('DOMContentLoaded', () => {
     const formAula = document.getElementById('form-aula');
@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const filtroTurma = document.getElementById('filtro-turma-id');
         const filtroInstrutor = document.getElementById('filtro-instrutor-id');
-        const filtroSala = document.getElementById('filtro-sala-id');
 
         const [resTurmas, resInstrutores, resSalas] = await Promise.all([
             enviarParaPHP('TurmaController.php', { acao: 'listar' }), //[cite: 23]
@@ -23,19 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (resTurmas && resTurmas.sucesso) {
             const options = resTurmas.dados.map(t => `<option value="${t.id}">${escapeHTML(t.codigo)}</option>`).join(''); //[cite: 23]
             if (selectTurma) selectTurma.innerHTML = '<option value="">Selecione a Turma</option>' + options; //[cite: 23]
-            if (filtroTurma) filtroTurma.innerHTML = '<option value="">Todas as Turmas</option>' + options; //[cite: 23]
+            if (filtroTurma) filtroTurma.innerHTML = '<option value="">Todas as Turmas</option>' + options;
         }
 
         if (resInstrutores && resInstrutores.sucesso) {
             const options = resInstrutores.dados.map(i => `<option value="${i.id}">${escapeHTML(i.nome)}</option>`).join(''); //[cite: 23]
             if (selectInstrutor) selectInstrutor.innerHTML = '<option value="">Selecione o Instrutor</option>' + options; //[cite: 23]
-            if (filtroInstrutor) filtroInstrutor.innerHTML = '<option value="">Todos os Instrutores</option>' + options; //[cite: 23]
+            if (filtroInstrutor) filtroInstrutor.innerHTML = '<option value="">Todos os Instrutores</option>' + options;
         }
 
-        if (resSalas && resSalas.sucesso) {
-            const options = resSalas.dados.map(s => `<option value="${s.id}">${escapeHTML(s.nome)}</option>`).join(''); //[cite: 23]
-            if (selectSala) selectSala.innerHTML = '<option value="">Selecione a Sala</option>' + options; //[cite: 23]
-            if (filtroSala) filtroSala.innerHTML = '<option value="">Todas as Salas</option>' + options; //[cite: 23]
+        if (resSalas && resSalas.sucesso && selectSala) {
+            selectSala.innerHTML = '<option value="">Selecione a Sala</option>' + 
+                resSalas.dados.map(s => `<option value="${s.id}">${escapeHTML(s.nome)}</option>`).join(''); //[cite: 23]
         }
     }
 
@@ -149,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 acao: 'gerar_relatorio',
                 data_inicio: document.getElementById('filtro-data-inicio')?.value,
                 data_fim: document.getElementById('filtro-data-fim')?.value,
-                sala_id: document.getElementById('filtro-sala-id')?.value,
+                periodo: document.getElementById('filtro-periodo')?.value,
                 instrutor_id: document.getElementById('filtro-instrutor-id')?.value,
                 turma_id: document.getElementById('filtro-turma-id')?.value
             }; //[cite: 23]
@@ -157,11 +155,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const resposta = await enviarParaPHP('AulaController.php', dados); //[cite: 23]
             if (resposta && resposta.sucesso && tabelaRelatorio) {
                 renderizarTabelaAulas(tabelaRelatorio, resposta.dados); //[cite: 23]
-                exibirToast("Relatório atualizado com sucesso!", "sucesso"); //[cite: 23]
+                exibirToast("Consulta atualizada com sucesso!", "sucesso"); //[cite: 23]
             }
         });
     }
 
     carregarOpcoesSelects(); //[cite: 23]
     carregarAulas(); //[cite: 23]
+    ativarBuscaTabela('tabela-aulas', 'input-busca-tabela');
+    ativarBuscaTabela('tabela-relatorio', 'input-busca-tabela');
 });
