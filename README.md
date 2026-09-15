@@ -36,6 +36,13 @@ SISGED/
 ├── database/                     # MODELAGEM E SCRIPTS BANCO DE DADOS
 │   ├── der_mer/                  # Diagramas de Entidade e Relacionamento
 │   └── schema.sql                # Script DDL de criação das tabelas
+│   └── seed_usuarios_teste.sql   # Criação de usuários aluno e instrutor
+│
+├── docs/                         # Documentos do sisged
+│   ├── Contrato/                 # Contrato com funções e assinaturas dos integrantes
+│   ├── Guia/                     # Guia de colaboração SISGED
+│   ├── Manual/                   # Manual do usuário para o site
+│   └── IDs/                      # Mapeamento dos IDs padrão do HTML no sisged
 │
 ├── public/                       # FRONT-END (Ponto de acesso visível)
 │   ├── assets/                   # Imagens e identidade visual FIEMG/SESI
@@ -43,7 +50,6 @@ SISGED/
 │   ├── js/                       # Scripts de tela e requisições Fetch/AJAX
 │   └── views/                    # Interfaces HTML limpas (sem PHP)
 │
-├── docs/                         # Documentação, Matriz RACI e Guias do Time
 ├── index.php                     # Roteador Principal / Entry Point
 └── README.md                     # Visão geral do repositório
 ```
@@ -61,12 +67,12 @@ SISGED/
 
 3. Configurar o Banco de Dados:
    * Abra o phpMyAdmin (http://localhost/phpmyadmin).
-   * Crie um banco de dados chamado sisged.
-   * Importe o arquivo localizado em database/schema.sql.
+   * Importe o arquivo localizado em database/schema.sql e em seguida o
+     database/seed_usuarios_teste.sql
 
 4. Acessar o sistema:
    Abra o navegador e acesse:
-   http://localhost/SISGED/public/views/login.html
+   http://localhost/sisged/public/views/login.html
 
 ---
 
