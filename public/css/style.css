@@ -307,6 +307,10 @@ textarea:focus-visible,
   grid-template-columns: 1fr;
 }
 
+.grade-principal > * {
+  min-width: 0; /* evita que o item do grid (ex.: painel com tabela larga) estoure a largura da tela no mobile */
+}
+
 @media (min-width: 900px) {
   .grade-principal {
     grid-template-columns: minmax(300px, 380px) 1fr;
@@ -722,16 +726,15 @@ body.modo-daltonico {
   --cor-sucesso-bg: #DCF0F5;
   --cor-erro: #B23A00;
   --cor-erro-bg: #FBE4D3;
-  --cor-destaque: #E8631A;
+  --cor-destaque: #8A6D00;
+  --cor-destaque-hover: #6E5700;
 }
 
 body.modo-daltonico table .btn-editar {
-  background: #FFFFFF;
   border-width: 2px;
 }
 body.modo-daltonico table .btn-deletar {
   border-width: 2px;
-  background: #FFFFFF;
 }
 body.modo-daltonico table .btn-deletar::after { content: " ✕"; }
 body.modo-daltonico table .btn-editar::after { content: " ✎"; }
