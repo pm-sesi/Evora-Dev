@@ -4,6 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/AulaModel.php';
+require_once __DIR__ . '/../helpers/Validacao.php';
 
 $input = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 $acao = $input['acao'] ?? '';
@@ -32,6 +33,11 @@ if ($acao === 'cadastrar') {
 
     if (empty($input['turma_id']) || empty($input['instrutor_id']) || empty($input['sala_id']) || empty($input['data']) || empty($input['hora_inicio']) || empty($input['hora_fim'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os dados da aula.']);
+        exit;
+    }
+
+    if (!horarioValido($input['hora_inicio'], $input['hora_fim'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'O horário final deve ser posterior ao horário inicial.']);
         exit;
     }
 
@@ -71,6 +77,11 @@ if ($acao === 'atualizar') {
 
     if (empty($input['turma_id']) || empty($input['instrutor_id']) || empty($input['sala_id']) || empty($input['data']) || empty($input['hora_inicio']) || empty($input['hora_fim'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os dados da aula.']);
+        exit;
+    }
+
+    if (!horarioValido($input['hora_inicio'], $input['hora_fim'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'O horário final deve ser posterior ao horário inicial.']);
         exit;
     }
 

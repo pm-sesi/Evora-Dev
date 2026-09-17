@@ -85,6 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
             };
             if (emEdicao) dados.id = idEdicao;
 
+            if (!emailValido(dados.email)) {
+                exibirToast("Informe um e-mail válido (ex.: nome@dominio.com).", "erro");
+                return;
+            }
+
+            if (!cpfValido(dados.cpf)) {
+                exibirToast("CPF inválido. Confira os números digitados.", "erro");
+                return;
+            }
+
             const resposta = await enviarParaPHP('InstrutorController.php', dados); //[cite: 25]
             if (resposta && resposta.sucesso) {
                 exibirToast(resposta.mensagem, "sucesso"); //[cite: 25]
@@ -96,6 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 exibirToast(resposta?.mensagem || (emEdicao ? "Erro ao atualizar." : "Erro ao cadastrar."), "erro"); //[cite: 25]
             }
+        });
+    }
+
+    const campoCpf = document.getElementById('instrutor-cpf');
+    if (campoCpf) {
+        campoCpf.setAttribute('maxlength', '14');
+        campoCpf.addEventListener('input', () => {
+            let v = campoCpf.value.replace(/\D/g, '').slice(0, 11);
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d)/, '$1.$2');
+            v = v.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            campoCpf.value = v;
         });
     }
 

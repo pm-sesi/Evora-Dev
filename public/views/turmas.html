@@ -65,6 +65,11 @@
           </div>
 
           <div class="campo">
+            <label for="turma-curso">Curso</label>
+            <input type="text" id="turma-curso" name="curso" placeholder="Ex.: Técnico em Informática para Internet" required>
+          </div>
+
+          <div class="campo">
             <label for="turma-periodo">Período</label>
             <select id="turma-periodo" name="periodo" required>
               <option value="">Selecione o período</option>
@@ -104,7 +109,7 @@
           <h2 id="titulo-tabela-turmas">Turmas cadastradas</h2>
           <div class="campo-busca">
             <label for="input-busca-tabela">Buscar</label>
-            <input type="search" id="input-busca-tabela" placeholder="Filtrar por código ou sala...">
+            <input type="search" id="input-busca-tabela" placeholder="Filtrar por código, curso ou sala...">
           </div>
         </div>
 
@@ -115,6 +120,7 @@
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Código</th>
+                <th scope="col">Curso</th>
                 <th scope="col">Período</th>
                 <th scope="col">Sala</th>
                 <th scope="col">Vigência</th>
@@ -123,7 +129,7 @@
             </thead>
             <tbody>
               <tr>
-                <td colspan="6" class="estado-vazio">Carregando turmas…</td>
+                <td colspan="7" class="estado-vazio">Carregando turmas…</td>
               </tr>
             </tbody>
           </table>

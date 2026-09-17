@@ -30,7 +30,7 @@ if ($acao === 'cadastrar') {
         exit;
     }
 
-    if (empty($input['codigo']) || empty($input['periodo']) || empty($input['sala_id'])) {
+    if (empty($input['codigo']) || empty($input['curso']) || empty($input['periodo']) || empty($input['sala_id'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os campos obrigatórios da turma.']);
         exit;
     }
@@ -69,7 +69,7 @@ if ($acao === 'atualizar') {
         exit;
     }
 
-    if (empty($input['codigo']) || empty($input['periodo']) || empty($input['sala_id'])) {
+    if (empty($input['codigo']) || empty($input['curso']) || empty($input['periodo']) || empty($input['sala_id'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha todos os campos obrigatórios da turma.']);
         exit;
     }

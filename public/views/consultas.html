@@ -53,18 +53,17 @@
 
     <section class="painel" aria-labelledby="titulo-filtro-relatorio">
       <h2 id="titulo-filtro-relatorio">Filtros da consulta</h2>
-      <p class="painel-descricao">Combine os filtros abaixo e clique em Consultar. Todos os campos são opcionais.</p>
+      <p class="painel-descricao">Todos os campos são opcionais.</p>
 
-      <form id="form-filtro-relatorio" novalidate>
-        <div class="linha-campos duas-colunas">
-          <div class="campo">
-            <label for="filtro-data-inicio">Data inicial</label>
-            <input type="date" id="filtro-data-inicio" name="data_inicio">
-          </div>
-          <div class="campo">
-            <label for="filtro-data-fim">Data final</label>
-            <input type="date" id="filtro-data-fim" name="data_fim">
-          </div>
+      <form id="form-filtro-relatorio" class="filtros-consulta" novalidate>
+        <div class="campo">
+          <label for="filtro-data-inicio">Data inicial</label>
+          <input type="date" id="filtro-data-inicio" name="data_inicio">
+        </div>
+
+        <div class="campo">
+          <label for="filtro-data-fim">Data final</label>
+          <input type="date" id="filtro-data-fim" name="data_fim">
         </div>
 
         <div class="campo">
@@ -74,6 +73,7 @@
             <option value="Manhã">Manhã</option>
             <option value="Tarde">Tarde</option>
             <option value="Noite">Noite</option>
+            <option value="Integral">Integral</option>
           </select>
         </div>
 
@@ -84,14 +84,14 @@
           </select>
         </div>
 
-        <div class="campo">
+        <div class="campo campo-largo">
           <label for="filtro-turma-id">Turma</label>
           <select id="filtro-turma-id" name="turma_id">
             <option value="">Todas as Turmas</option>
           </select>
         </div>
 
-        <div class="acoes-formulario">
+        <div class="campo campo-acao">
           <button type="submit" id="btn-gerar-relatorio" class="botao botao-primario">Consultar</button>
         </div>
       </form>
@@ -102,7 +102,7 @@
         <h2 id="titulo-tabela-relatorio">Resultado da consulta</h2>
         <div class="campo-busca">
           <label for="input-busca-tabela">Buscar</label>
-          <input type="search" id="input-busca-tabela" placeholder="Filtrar por turma, instrutor ou sala...">
+          <input type="search" id="input-busca-tabela" placeholder="Filtrar por turma, curso, instrutor ou sala...">
         </div>
       </div>
 
@@ -113,6 +113,7 @@
             <tr>
               <th scope="col">ID</th>
               <th scope="col">Turma</th>
+              <th scope="col">Curso</th>
               <th scope="col">Instrutor</th>
               <th scope="col">Sala</th>
               <th scope="col">Data</th>
@@ -122,7 +123,7 @@
           </thead>
           <tbody>
             <tr>
-              <td colspan="7" class="estado-vazio">Defina os filtros e clique em "Consultar".</td>
+              <td colspan="8" class="estado-vazio">Defina os filtros e clique em "Consultar".</td>
             </tr>
           </tbody>
         </table>

@@ -354,6 +354,41 @@ form { margin: 0; }
   margin-bottom: 1rem;
 }
 
+/* ---- Filtros da tela de Consultas (layout horizontal compacto) ----
+   Grid fluido: no desktop os campos ficam lado a lado; abaixo de ~700px
+   cada um ocupa a linha inteira automaticamente. */
+.filtros-consulta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem 1rem;
+  align-items: end;
+}
+
+.filtros-consulta .campo {
+  margin-bottom: 0; /* o gap do grid já cuida do espaçamento */
+  min-width: 0;
+}
+
+/* Turma recebe o dobro da largura: os códigos de turma são longos */
+.filtros-consulta .campo-largo {
+  grid-column: span 2;
+}
+
+.filtros-consulta .campo-acao {
+  display: flex;
+  align-items: flex-end;
+}
+
+.filtros-consulta .campo-acao .botao {
+  width: 100%;
+}
+
+@media (max-width: 700px) {
+  .filtros-consulta .campo-largo {
+    grid-column: span 1;
+  }
+}
+
 .campo label {
   display: block;
   font-weight: 600;
@@ -525,6 +560,7 @@ tbody tr:last-child td { border-bottom: none; }
 table .btn-editar,
 table .btn-deletar {
   min-height: 36px;
+  min-width: 104px; /* mesma largura para os dois, independente do texto */
   padding: 0.4rem 0.75rem;
   font-size: 0.82rem;
   border-radius: var(--raio-pequeno);
@@ -532,7 +568,18 @@ table .btn-deletar {
   cursor: pointer;
   font-weight: 700;
   margin-right: 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  box-sizing: border-box;
+  vertical-align: middle;
 }
+
+/* Ícones de reforço, presentes em todos os modos (não só no daltônico) */
+table .btn-editar::after { content: " ✎"; }
+table .btn-deletar::after { content: " ✕"; }
+
 table .btn-editar {
   background: var(--azul-100);
   color: var(--azul-800);
@@ -713,6 +760,29 @@ body.modo-escuro thead th { background: #0A1D2E; }
 
 body.modo-escuro .toast { background: #1E2C3A; color: var(--cor-texto); }
 
+/* No modo escuro o fundo do botão Editar fica escuro (--azul-100 é
+   redefinido acima), então o texto precisa clarear junto — senão fica
+   azul escuro sobre azul escuro e some. O mesmo vale para o Excluir. */
+body.modo-escuro table .btn-editar {
+  background: #1E3245;
+  color: #9FD0F0;
+  border-color: #4E8FC0;
+}
+body.modo-escuro table .btn-editar:hover {
+  background: #4E8FC0;
+  color: #0A1622;
+}
+
+body.modo-escuro table .btn-deletar {
+  background: #3A1E22;
+  color: #F5A99B;
+  border-color: #C4614F;
+}
+body.modo-escuro table .btn-deletar:hover {
+  background: #C4614F;
+  color: #1A0E0C;
+}
+
 /* =========================================================================
    11. MODO DALTÔNICO (btn-modo-daltonico)
    Ajusta a paleta para reforçar contraste entre estados de sucesso/erro,
@@ -730,14 +800,14 @@ body.modo-daltonico {
   --cor-destaque-hover: #6E5700;
 }
 
+/* Os ícones (✎ / ✕) já são aplicados em todos os modos; aqui só reforçamos
+   a borda, para não depender apenas da cor. */
 body.modo-daltonico table .btn-editar {
   border-width: 2px;
 }
 body.modo-daltonico table .btn-deletar {
   border-width: 2px;
 }
-body.modo-daltonico table .btn-deletar::after { content: " ✕"; }
-body.modo-daltonico table .btn-editar::after { content: " ✎"; }
 
 /* =========================================================================
    12. UTILITÁRIOS E RESPONSIVIDADE GERAL

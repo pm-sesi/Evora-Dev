@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            if (!emailValido(email)) {
+                if (msgErro) msgErro.textContent = "Informe um e-mail válido (ex.: nome@dominio.com).";
+                return;
+            }
+
             const resposta = await enviarParaPHP('AuthController.php', { //[cite: 24]
                 acao: 'login',
                 email: email,

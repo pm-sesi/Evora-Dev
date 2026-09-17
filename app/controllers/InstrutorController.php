@@ -4,6 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 header('Content-Type: application/json');
 require_once __DIR__ . '/../models/InstrutorModel.php';
+require_once __DIR__ . '/../helpers/Validacao.php';
 
 $input = json_decode(file_get_contents('php://input'), true) ?? $_POST;
 $acao = $input['acao'] ?? '';
@@ -35,6 +36,16 @@ if ($acao === 'cadastrar') {
         exit;
     }
 
+    if (!emailValido($input['email'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Informe um e-mail válido (ex.: nome@dominio.com).']);
+        exit;
+    }
+
+    if (!cpfValido($input['cpf'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'CPF inválido. Confira os números digitados.']);
+        exit;
+    }
+
     try {
         $sucesso = $model->cadastrar($input);
         echo json_encode([
@@ -61,6 +72,16 @@ if ($acao === 'atualizar') {
 
     if (empty($input['nome']) || empty($input['cpf']) || empty($input['email'])) {
         echo json_encode(['sucesso' => false, 'mensagem' => 'Preencha os campos obrigatórios.']);
+        exit;
+    }
+
+    if (!emailValido($input['email'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'Informe um e-mail válido (ex.: nome@dominio.com).']);
+        exit;
+    }
+
+    if (!cpfValido($input['cpf'])) {
+        echo json_encode(['sucesso' => false, 'mensagem' => 'CPF inválido. Confira os números digitados.']);
         exit;
     }
 

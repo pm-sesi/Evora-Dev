@@ -13,7 +13,8 @@ class AulaModel {
 
     public function listar() {
         $sql = "SELECT a.id, a.turma_id, a.instrutor_id, a.sala_id, a.data, a.hora_inicio, a.hora_fim,
-                       t.codigo AS turma_codigo, i.nome AS instrutor_nome, s.nome AS sala_nome
+                       t.codigo AS turma_codigo, t.curso AS turma_curso, t.periodo AS turma_periodo,
+                       i.nome AS instrutor_nome, s.nome AS sala_nome
                 FROM aulas a
                 LEFT JOIN turmas t ON a.turma_id = t.id
                 LEFT JOIN instrutores i ON a.instrutor_id = i.id
@@ -108,7 +109,8 @@ class AulaModel {
 
     public function gerarRelatorio($filtros = []) {
         $sql = "SELECT a.id, a.turma_id, a.instrutor_id, a.sala_id, a.data, a.hora_inicio, a.hora_fim,
-                       t.codigo AS turma_codigo, i.nome AS instrutor_nome, s.nome AS sala_nome
+                       t.codigo AS turma_codigo, t.curso AS turma_curso, t.periodo AS turma_periodo,
+                       i.nome AS instrutor_nome, s.nome AS sala_nome
                 FROM aulas a
                 LEFT JOIN turmas t ON a.turma_id = t.id
                 LEFT JOIN instrutores i ON a.instrutor_id = i.id
@@ -138,16 +140,14 @@ class AulaModel {
             $params[':turma_id'] = $filtros['turma_id'];
         }
         if (!empty($filtros['periodo'])) {
-            switch ($filtros['periodo']) {
-                case 'Manhã':
-                    $sql .= " AND a.hora_inicio < '12:00:00'";
-                    break;
-                case 'Tarde':
-                    $sql .= " AND a.hora_inicio >= '12:00:00' AND a.hora_inicio < '18:00:00'";
-                    break;
-                case 'Noite':
-                    $sql .= " AND a.hora_inicio >= '18:00:00'";
-                    break;
+            // O período vem da turma. "Integral" cobre manhã, tarde e noite,
+            // então uma turma integral aparece em qualquer período selecionado.
+            if ($filtros['periodo'] === 'Integral') {
+                $sql .= " AND t.periodo = :periodo";
+                $params[':periodo'] = 'Integral';
+            } else {
+                $sql .= " AND (t.periodo = :periodo OR t.periodo = 'Integral')";
+                $params[':periodo'] = $filtros['periodo'];
             }
         }
 
