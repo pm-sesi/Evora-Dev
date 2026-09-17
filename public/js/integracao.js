@@ -43,6 +43,43 @@ async function enviarParaPHP(controller, dados = {}) {
  * escondendo as linhas do <tbody> que não contêm o termo digitado.
  * Funciona mesmo quando a tabela é recarregada depois (o listener fica no input).
  */
+/**
+ * Valida o formato de um e-mail. Aceita "instrutor@sisged.com", rejeita "abc".
+ */
+function emailValido(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(email).trim());
+}
+
+/**
+ * Valida um CPF conferindo os dois dígitos verificadores.
+ * Aceita com ou sem máscara. Rejeita sequências repetidas (111.111.111-11).
+ */
+function cpfValido(cpf) {
+    const numeros = String(cpf).replace(/\D/g, '');
+
+    if (numeros.length !== 11) return false;
+    if (/^(\d)\1{10}$/.test(numeros)) return false;
+
+    for (let posicao = 9; posicao < 11; posicao++) {
+        let soma = 0;
+        for (let i = 0; i < posicao; i++) {
+            soma += Number(numeros[i]) * ((posicao + 1) - i);
+        }
+        const digito = ((10 * soma) % 11) % 10;
+        if (Number(numeros[posicao]) !== digito) return false;
+    }
+
+    return true;
+}
+
+/**
+ * Confere se o horário final é posterior ao inicial (formato HH:MM).
+ */
+function horarioValido(horaInicio, horaFim) {
+    if (!horaInicio || !horaFim) return false;
+    return horaFim > horaInicio; // strings HH:MM comparam corretamente em ordem alfabética
+}
+
 function ativarBuscaTabela(idTabela, idInput) {
     const input = document.getElementById(idInput);
     const tabela = document.getElementById(idTabela);

@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `salas` (
 CREATE TABLE IF NOT EXISTS `turmas` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
     `codigo` VARCHAR(50) NOT NULL UNIQUE,
+    `curso` VARCHAR(150) NOT NULL,
     `periodo` VARCHAR(50) NOT NULL,
     `sala_id` INT NOT NULL,
     `data_inicio` DATE NOT NULL,
@@ -57,14 +58,19 @@ CREATE TABLE IF NOT EXISTS `aulas` (
     `hora_inicio` TIME NOT NULL,
     `hora_fim` TIME NOT NULL,
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT `chk_aulas_horario` CHECK (`hora_fim` > `hora_inicio`),
     FOREIGN KEY (`turma_id`) REFERENCES `turmas`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (`instrutor_id`) REFERENCES `instrutores`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (`sala_id`) REFERENCES `salas`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    INDEX `idx_aulas_data` (`data`),
+    INDEX `idx_aulas_instrutor_data` (`instrutor_id`, `data`),
+    INDEX `idx_aulas_sala_data` (`sala_id`, `data`),
+    INDEX `idx_aulas_turma_data` (`turma_id`, `data`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Inserção de Usuário Administrador Inicial
+-- Inserção de Usuário Administrador Inicial (senha: senha123)
 INSERT INTO `usuarios` (`nome`, `email`, `senha`, `perfil`) VALUES
-('Coordenador Geral', 'admin@sisged.com', '$2y$10$usesomesillystringforeYRrmbU.5AgmgdJEjfEDkxfL4uBOCS2e', 'Coordenação');
+('Coordenador Geral', 'admin@sisged.com', '$2b$12$65g9A4rnbjq7maJ9bB6rsOlfPo4hSuChCgWPAPJFXFYfIL2w9Qyy.', 'Coordenação');
 
 -- Cria o usuário aceitando conexões por localhost e por IP
 CREATE USER IF NOT EXISTS 'sisged_admin'@'localhost' IDENTIFIED BY 'evoradev123';

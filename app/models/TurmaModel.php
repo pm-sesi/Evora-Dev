@@ -12,7 +12,7 @@ class TurmaModel {
     }
 
     public function listar() {
-        $sql = "SELECT t.id, t.codigo, t.periodo, t.sala_id, t.data_inicio, t.data_fim,
+        $sql = "SELECT t.id, t.codigo, t.curso, t.periodo, t.sala_id, t.data_inicio, t.data_fim,
                        s.nome AS sala_nome
                 FROM turmas t
                 LEFT JOIN salas s ON t.sala_id = s.id
@@ -63,11 +63,12 @@ class TurmaModel {
     }
 
     public function cadastrar($dados) {
-        $sql = "INSERT INTO turmas (codigo, periodo, sala_id, data_inicio, data_fim)
-                VALUES (:codigo, :periodo, :sala_id, :data_inicio, :data_fim)";
+        $sql = "INSERT INTO turmas (codigo, curso, periodo, sala_id, data_inicio, data_fim)
+                VALUES (:codigo, :curso, :periodo, :sala_id, :data_inicio, :data_fim)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([
             ':codigo' => $dados['codigo'],
+            ':curso' => $dados['curso'],
             ':periodo' => $dados['periodo'],
             ':sala_id' => $dados['sala_id'],
             ':data_inicio' => $dados['data_inicio'],
@@ -78,6 +79,7 @@ class TurmaModel {
     public function atualizar($id, $dados) {
         $sql = "UPDATE turmas
                 SET codigo = :codigo,
+                    curso = :curso,
                     periodo = :periodo,
                     sala_id = :sala_id,
                     data_inicio = :data_inicio,
@@ -87,6 +89,7 @@ class TurmaModel {
         return $stmt->execute([
             ':id' => $id,
             ':codigo' => $dados['codigo'],
+            ':curso' => $dados['curso'],
             ':periodo' => $dados['periodo'],
             ':sala_id' => $dados['sala_id'],
             ':data_inicio' => $dados['data_inicio'],

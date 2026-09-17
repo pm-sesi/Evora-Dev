@@ -30,11 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr>
                     <td>${escapeHTML(t.id)}</td>
                     <td>${escapeHTML(t.codigo)}</td>
+                    <td>${escapeHTML(t.curso || '—')}</td>
                     <td>${escapeHTML(t.periodo)}</td>
                     <td>${escapeHTML(t.sala_nome || t.sala_id)}</td>
                     <td>${escapeHTML(t.data_inicio)} até ${escapeHTML(t.data_fim)}</td>
                     ${ehCoordenacao ? `<td>
-                        <button class="btn-editar" data-id="${escapeHTML(t.id)}" data-codigo="${escapeHTML(t.codigo)}" data-periodo="${escapeHTML(t.periodo)}" data-sala_id="${escapeHTML(t.sala_id)}" data-data_inicio="${escapeHTML(t.data_inicio)}" data-data_fim="${escapeHTML(t.data_fim)}">Editar</button>
+                        <button class="btn-editar" data-id="${escapeHTML(t.id)}" data-codigo="${escapeHTML(t.codigo)}" data-curso="${escapeHTML(t.curso || '')}" data-periodo="${escapeHTML(t.periodo)}" data-sala_id="${escapeHTML(t.sala_id)}" data-data_inicio="${escapeHTML(t.data_inicio)}" data-data_fim="${escapeHTML(t.data_fim)}">Editar</button>
                         <button class="btn-deletar" data-id="${escapeHTML(t.id)}">Excluir</button>
                     </td>` : ''}
                 </tr>
@@ -71,6 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const campoId = document.getElementById('turma-id');
                 if (campoId) campoId.value = alvo.getAttribute('data-id');
                 if (document.getElementById('turma-codigo')) document.getElementById('turma-codigo').value = alvo.getAttribute('data-codigo');
+                if (document.getElementById('turma-curso')) document.getElementById('turma-curso').value = alvo.getAttribute('data-curso');
                 if (document.getElementById('turma-periodo')) document.getElementById('turma-periodo').value = alvo.getAttribute('data-periodo');
                 if (document.getElementById('turma-sala-id')) document.getElementById('turma-sala-id').value = alvo.getAttribute('data-sala_id');
                 if (document.getElementById('turma-data-inicio')) document.getElementById('turma-data-inicio').value = alvo.getAttribute('data-data_inicio');
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dados = {
                 acao: emEdicao ? 'atualizar' : 'cadastrar',
                 codigo: document.getElementById('turma-codigo').value.trim(),
+                curso: document.getElementById('turma-curso').value.trim(),
                 periodo: document.getElementById('turma-periodo').value,
                 sala_id: document.getElementById('turma-sala-id').value,
                 data_inicio: document.getElementById('turma-data-inicio').value,

@@ -52,10 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const perfilAtivo = localStorage.getItem('perfilAtivo'); //[cite: 23]
         const ehCoordenacao = perfilAtivo === 'Coordenação'; //[cite: 23]
 
+        // Sem a coluna de Ações nas linhas, o cabeçalho correspondente também sai,
+        // senão a tabela fica com uma coluna a mais que as linhas.
+        if (!ehCoordenacao) {
+            const cabecalhos = tabelaElement.querySelectorAll('thead th');
+            const ultimo = cabecalhos[cabecalhos.length - 1];
+            if (ultimo && ultimo.querySelector('.sr-only')) ultimo.style.display = 'none';
+        }
+
+        if (!dados || dados.length === 0) {
+            const totalColunas = tabelaElement.querySelectorAll('thead th').length || 8;
+            tbody.innerHTML = `<tr><td colspan="${totalColunas}" class="estado-vazio">Nenhuma aula encontrada para os filtros informados.</td></tr>`;
+            return;
+        }
+
         tbody.innerHTML = dados.map(a => `
             <tr>
                 <td>${escapeHTML(a.id)}</td>
                 <td>${escapeHTML(a.turma_codigo || a.turma_id)}</td>
+                <td>${escapeHTML(a.turma_curso || '—')}</td>
                 <td>${escapeHTML(a.instrutor_nome || a.instrutor_id)}</td>
                 <td>${escapeHTML(a.sala_nome || a.sala_id)}</td>
                 <td>${escapeHTML(a.data)}</td>
@@ -124,6 +139,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 hora_fim: document.getElementById('aula-hora-fim').value
             };
             if (emEdicao) dados.id = idEdicao;
+
+            if (!horarioValido(dados.hora_inicio, dados.hora_fim)) {
+                exibirToast("O horário final deve ser posterior ao horário inicial.", "erro");
+                return;
+            }
 
             const resposta = await enviarParaPHP('AulaController.php', dados); //[cite: 23]
             if (resposta && resposta.sucesso) {

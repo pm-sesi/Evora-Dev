@@ -107,17 +107,18 @@
           <h2 id="titulo-tabela-aulas">Grade de aulas</h2>
           <div class="campo-busca">
             <label for="input-busca-tabela">Buscar</label>
-            <input type="search" id="input-busca-tabela" placeholder="Filtrar por turma, instrutor ou sala...">
+            <input type="search" id="input-busca-tabela" placeholder="Filtrar por turma, curso, instrutor ou sala...">
           </div>
         </div>
 
         <div class="tabela-wrapper">
           <table id="tabela-aulas">
-            <caption class="sr-only">Grade de aulas agendadas, com turma, instrutor, sala, data e horário</caption>
+            <caption class="sr-only">Grade de aulas agendadas, com turma, curso, instrutor, sala, data e horário</caption>
             <thead>
               <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Turma</th>
+                <th scope="col">Curso</th>
                 <th scope="col">Instrutor</th>
                 <th scope="col">Sala</th>
                 <th scope="col">Data</th>
@@ -127,7 +128,7 @@
             </thead>
             <tbody>
               <tr>
-                <td colspan="7" class="estado-vazio">Carregando aulas…</td>
+                <td colspan="8" class="estado-vazio">Carregando aulas…</td>
               </tr>
             </tbody>
           </table>
