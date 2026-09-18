@@ -813,7 +813,7 @@ body.modo-daltonico table .btn-deletar {
    12. UTILITÁRIOS E RESPONSIVIDADE GERAL
    ========================================================================= */
 
-.somente-coordenacao { }
+.somente-coordenacao { display: none; }
 
 @media (min-width: 640px) {
   .cabecalho-topo { padding: 0.85rem 1.5rem; }
