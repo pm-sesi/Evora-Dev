@@ -1,4 +1,4 @@
-<?php
+e<?php
 /**
  * Modelo de Configuração - Ambiente de Desenvolvimento
  * Este arquivo é versionado no Git e serve de fallback/modelo para novas instalações.
