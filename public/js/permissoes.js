@@ -9,6 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    // Mostra quem está logado e com qual perfil, ao lado do botão Sair
+    const nomeUsuario = localStorage.getItem('nomeUsuario');
+    const btnLogout = document.getElementById('btn-logout');
+    if (btnLogout && !document.getElementById('usuario-logado')) {
+        const indicador = document.createElement('span');
+        indicador.id = 'usuario-logado';
+        indicador.className = 'usuario-logado';
+        indicador.textContent = nomeUsuario ? `${nomeUsuario} · ${perfilAtivo}` : perfilAtivo;
+        btnLogout.insertAdjacentElement('beforebegin', indicador);
+    }
+
     const PAGINAS_RESTRITAS = ['turmas.html', 'aulas.html', 'salas.html', 'instrutores.html'];
     const paginaAtual = window.location.pathname.split('/').pop();
 

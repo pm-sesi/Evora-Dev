@@ -14,6 +14,16 @@
 
   <main class="login-envolucro">
     <div class="login-cartao">
+      <div class="logo-industria">
+        <img src="../assets/logo-sesi-senai.png" alt="FIEMG · SESI · SENAI"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="logo-industria-fallback" role="img" aria-label="FIEMG, SESI e SENAI">
+          <span class="chip chip-fiemg">FIEMG</span>
+          <span class="chip chip-sesi">SESI</span>
+          <span class="chip chip-senai">SENAI</span>
+        </div>
+      </div>
+
       <div class="login-marca">
         <span class="marca-selo" aria-hidden="true">SG</span>
         <div>
@@ -49,17 +59,6 @@
             aria-describedby="msg-login-erro">
         </div>
 
-        <div class="campo">
-          <label for="login-perfil">Perfil de acesso</label>
-          <select id="login-perfil" name="perfil">
-            <option value="">Selecione seu perfil</option>
-            <option value="Aluno">Aluno</option>
-            <option value="Instrutor">Instrutor</option>
-            <option value="Coordenação">Coordenação</option>
-          </select>
-          <span class="campo-dica">A Coordenação tem acesso completo de cadastro, edição e exclusão.</span>
-        </div>
-
         <div
           id="msg-login-erro"
           class="mensagem-erro"
@@ -73,7 +72,7 @@
     </div>
   </main>
 
-  <p class="login-rodape-info">SENAI / FIEMG / SESI — Acesso restrito a usuários cadastrados.</p>
+  <p class="login-rodape-info">FIEMG / SESI / SENAI — Acesso restrito a usuários cadastrados.</p>
 
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 

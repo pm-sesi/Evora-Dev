@@ -1,6 +1,6 @@
 -- =========================================================================
 -- SISGED - Sistema de Gestão Educacional Dinâmico
--- schema.sql - Estrutura do Banco de Dados (Corrigido.)
+-- schema.sql - Estrutura do Banco de Dados (Corrigido)
 -- =========================================================================
 
 CREATE DATABASE IF NOT EXISTS `sisged` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

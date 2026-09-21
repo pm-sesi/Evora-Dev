@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const email = document.getElementById('login-email')?.value.trim(); 
             const senha = document.getElementById('login-senha')?.value; 
-            const perfil = document.getElementById('login-perfil')?.value; 
             const msgErro = document.getElementById('msg-login-erro');
 
             if (msgErro) msgErro.textContent = '';
@@ -28,12 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const resposta = await enviarParaPHP('AuthController.php', { //[cite: 24]
                 acao: 'login',
                 email: email,
-                senha: senha,
-                perfil: perfil
+                senha: senha
             });
 
             if (resposta && resposta.sucesso) {
-                localStorage.setItem('perfilAtivo', perfil || resposta.usuario.perfil); //[cite: 24]
+                // O perfil vem do próprio cadastro do usuário no banco — não é mais escolhido na tela.
+                localStorage.setItem('perfilAtivo', resposta.usuario.perfil); //[cite: 24]
+                localStorage.setItem('nomeUsuario', resposta.usuario.nome);
                 window.location.href = 'turmas.html'; // Padronizado com index.php[cite: 24, 30]
             } else {
                 if (msgErro) {
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btnLogout.addEventListener('click', async () => {
             await enviarParaPHP('AuthController.php', { acao: 'logout' }); //[cite: 24]
             localStorage.removeItem('perfilAtivo'); //[cite: 24]
+            localStorage.removeItem('nomeUsuario');
             window.location.href = 'login.html'; // Padronizado[cite: 24, 30]
         });
     }
