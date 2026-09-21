@@ -1,28 +1,35 @@
 /* =========================================================================
    SISGED — Sistema de Gestão Educacional Dinâmico
-   Estilos globais — Mobile First / WCAG / Identidade visual FIEMG · SENAI
+   Estilos globais — Mobile First / WCAG / Identidade visual FIEMG · SESI · SENAI
    =========================================================================
-   Paleta inspirada nas cores institucionais do Sistema Indústria:
-   azul (FIEMG/confiança) + laranja (SENAI/energia e inovação técnica).
+   Paleta baseada no Manual de Marcas do Sistema Indústria (CNI/SESI/SENAI/
+   IEL, versão 2024): azul escuro #164194 e azul claro #008BD2 como base
+   institucional comum; laranja #E84910 é o detalhe de marca do SENAI,
+   verde #52AE32 é o detalhe de marca do SESI.
    ========================================================================= */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  /* --- Cor: base institucional --- */
-  --azul-900: #082338;
-  --azul-800: #0B3C5D;
-  --azul-700: #114E78;
-  --azul-600: #17679C;
-  --azul-100: #E4EEF5;
+  /* --- Cor: base institucional ---
+     Valores oficiais do Manual de Marcas do Sistema Indústria (CNI/SESI/
+     SENAI/IEL, 2024): azul escuro e azul claro são a base comum; o laranja
+     é o detalhe de marca do SENAI, o verde é o detalhe de marca do SESI. */
+  --azul-900: #0C2C5E;
+  --azul-800: #164194; /* oficial — Sistema Indústria / CNI */
+  --azul-700: #1C56B8;
+  --azul-600: #008BD2; /* oficial — "Azul Claro" do manual */
+  --azul-100: #E3EEF9;
 
-  --laranja-700: #C74F0F;
-  --laranja-600: #E8631A;
-  --laranja-500: #F2833D;
-  --laranja-100: #FDE7D8;
+  --laranja-700: #C13B0C;
+  --laranja-600: #E84910; /* oficial — detalhe de marca do SENAI */
+  --laranja-500: #F26B3D;
+  --laranja-100: #FCE0D6;
 
-  --verde-600: #2E7D53;
-  --verde-100: #E1F3E9;
+  --verde-700: #3D8A26; /* tom escurecido do verde oficial, usado em texto/ícone (contraste) */
+  --verde-600: #52AE32; /* oficial — detalhe de marca do SESI (uso decorativo) */
+  --verde-100: #E3F4DC;
+
   --vermelho-600: #C62E3D;
   --vermelho-100: #FBE4E6;
 
@@ -47,7 +54,7 @@
   --cor-destaque-hover: var(--laranja-700);
   --cor-destaque-texto: var(--branco);
 
-  --cor-sucesso: var(--verde-600);
+  --cor-sucesso: var(--verde-700);
   --cor-sucesso-bg: var(--verde-100);
   --cor-erro: var(--vermelho-600);
   --cor-erro-bg: var(--vermelho-100);
@@ -105,8 +112,8 @@ h3 { font-size: 1.05rem; }
 
 p { margin: 0 0 1em; max-width: 68ch; }
 
-a { color: var(--azul-700); }
-a:hover { color: var(--laranja-600); }
+a { color: var(--cor-primaria); }
+a:hover { color: var(--cor-destaque); }
 
 img { max-width: 100%; display: block; }
 
@@ -234,6 +241,14 @@ textarea:focus-visible,
   color: var(--azul-900);
 }
 
+.usuario-logado {
+  font-size: 0.82rem;
+  color: var(--branco);
+  opacity: 0.9;
+  white-space: nowrap;
+  margin-right: 0.25rem;
+}
+
 .navegacao-principal {
   background: var(--azul-900);
   overflow-x: auto;
@@ -313,7 +328,7 @@ textarea:focus-visible,
 
 @media (min-width: 900px) {
   .grade-principal {
-    grid-template-columns: minmax(300px, 380px) 1fr;
+    grid-template-columns: minmax(260px, 300px) 1fr;
     align-items: start;
   }
 }
@@ -369,8 +384,8 @@ form { margin: 0; }
   min-width: 0;
 }
 
-/* Turma recebe o dobro da largura: os códigos de turma são longos */
-.filtros-consulta .campo-largo {
+/* Turma recebe mais espaço: nomes/códigos de turma são mais longos */
+.filtros-consulta .campo-turma {
   grid-column: span 2;
 }
 
@@ -381,10 +396,11 @@ form { margin: 0; }
 
 .filtros-consulta .campo-acao .botao {
   width: 100%;
+  white-space: nowrap;
 }
 
 @media (max-width: 700px) {
-  .filtros-consulta .campo-largo {
+  .filtros-consulta .campo-turma {
     grid-column: span 1;
   }
 }
@@ -433,15 +449,65 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px var(--azul-100);
 }
 
+/* Ajuste específico para campos de horário */
+input[type="time"] {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 0.5rem;
+}
+
+/* Evita que o texto do label quebre em duas linhas */
+.linha-campos.duas-colunas .campo label {
+  white-space: nowrap;
+}
+
+/* Ajusta os elementos internos do campo de horário no Chrome/Edge */
+input[type="time"]::-webkit-datetime-edit {
+  padding: 0;
+}
+
+input[type="time"]::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  margin-left: auto;
+  cursor: pointer;
+}
+
 select { cursor: pointer; }
 
 .linha-campos {
   display: grid;
-  gap: 1rem;
   grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  min-width: 0;
 }
-@media (min-width: 480px) {
-  .linha-campos.duas-colunas { grid-template-columns: 1fr 1fr; }
+
+.linha-campos.duas-colunas {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.linha-campos > .campo {
+  min-width: 0;
+  width: 100%;
+}
+
+.linha-campos > .campo input,
+.linha-campos > .campo select,
+.linha-campos > .campo textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 479px) {
+  .linha-campos.duas-colunas {
+    grid-template-columns: 1fr;
+  }
 }
 
 .acoes-formulario {
@@ -503,7 +569,7 @@ select { cursor: pointer; }
 .botao-contorno {
   background: transparent;
   color: var(--cor-primaria);
-  border-color: var(--azul-700);
+  border-color: var(--cor-primaria);
 }
 .botao-contorno:hover { background: var(--azul-100); }
 
@@ -540,16 +606,24 @@ thead th {
   text-align: left;
   font-family: var(--fonte-titulo);
   font-weight: 600;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   letter-spacing: 0.01em;
-  padding: 0.75rem 1rem;
+  padding: 0.65rem 0.65rem;
   white-space: nowrap;
 }
 
 tbody td {
-  padding: 0.7rem 1rem;
+  padding: 0.55rem 0.65rem;
   border-bottom: 1px solid var(--cor-borda);
   vertical-align: middle;
+  max-width: 220px;
+  overflow-wrap: break-word;
+}
+
+/* A coluna de Ações não deve encolher — os botões precisam do espaço deles */
+tbody td:last-child {
+  max-width: none;
+  white-space: nowrap;
 }
 
 tbody tr:nth-child(even) { background: var(--cinza-100); }
@@ -559,19 +633,19 @@ tbody tr:last-child td { border-bottom: none; }
 
 table .btn-editar,
 table .btn-deletar {
-  min-height: 36px;
-  min-width: 104px; /* mesma largura para os dois, independente do texto */
-  padding: 0.4rem 0.75rem;
-  font-size: 0.82rem;
+  min-height: 34px;
+  min-width: 88px; /* mesma largura para os dois, independente do texto */
+  padding: 0.35rem 0.6rem;
+  font-size: 0.78rem;
   border-radius: var(--raio-pequeno);
   border: 1.5px solid transparent;
   cursor: pointer;
   font-weight: 700;
-  margin-right: 0.4rem;
+  margin-right: 0.35rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   box-sizing: border-box;
   vertical-align: middle;
 }
@@ -717,6 +791,33 @@ table .btn-deletar:hover { background: var(--cor-erro); color: var(--branco); }
   gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
+
+.logo-industria {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.logo-industria img { max-height: 40px; width: auto; }
+.logo-industria-fallback {
+  display: none; /* trocado para 'flex' via onerror quando a imagem real não existe */
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.logo-industria-fallback .chip {
+  font-family: var(--fonte-titulo);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: var(--branco);
+  background: var(--azul-800);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--raio-pequeno);
+  border-bottom: 3px solid transparent;
+}
+.logo-industria-fallback .chip-fiemg { border-bottom-color: var(--azul-600); }
+.logo-industria-fallback .chip-sesi { border-bottom-color: var(--verde-600); }
+.logo-industria-fallback .chip-senai { border-bottom-color: var(--laranja-600); }
 .login-marca .marca-selo { width: 48px; height: 48px; font-size: 1.2rem; }
 .login-marca strong {
   display: block;
@@ -745,10 +846,19 @@ body.modo-escuro {
   --cor-texto: #EAF0F5;
   --cor-texto-suave: #A9B7C4;
   --cor-borda: #2C3B49;
+  --cor-primaria: #4DB8E8; /* tom claro do azul oficial (#008BD2), legível em fundo escuro */
   --azul-100: #1E3245;
   --cinza-100: #1B2833;
   --vermelho-100: #3A1E22;
   --verde-100: #17301F;
+}
+
+/* Ícones nativos do navegador (calendário, relógio) vêm sempre pretos e
+   ficam invisíveis sobre os campos escuros — invertemos para clarear. */
+body.modo-escuro input[type="date"]::-webkit-calendar-picker-indicator,
+body.modo-escuro input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.9);
+  cursor: pointer;
 }
 
 body.modo-escuro .cabecalho,
@@ -757,6 +867,15 @@ body.modo-escuro .navegacao-principal { background: #071119; }
 body.modo-escuro .login-cartao { background: var(--cor-superficie); }
 
 body.modo-escuro thead th { background: #0A1D2E; }
+
+/* O anel de foco usa --azul-100 como glow; no escuro essa variável fica
+   escura e o anel some. Usamos uma cor clara fixa só para o glow. */
+body.modo-escuro input:focus,
+body.modo-escuro select:focus,
+body.modo-escuro textarea:focus {
+  border-color: var(--azul-600);
+  box-shadow: 0 0 0 3px rgba(0, 139, 210, 0.35);
+}
 
 body.modo-escuro .toast { background: #1E2C3A; color: var(--cor-texto); }
 
@@ -819,6 +938,10 @@ body.modo-daltonico table .btn-deletar {
   .cabecalho-topo { padding: 0.85rem 1.5rem; }
   .conteudo { padding: 2rem 1.5rem 4rem; }
   h1 { font-size: 1.75rem; }
+}
+
+@media (max-width: 480px) {
+  .usuario-logado { display: none; }
 }
 
 @media print {

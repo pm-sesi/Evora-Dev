@@ -8,6 +8,21 @@
   <meta name="robots" content="noindex">
   <link rel="stylesheet" href="../css/style.css">
 </head>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const hoje = new Date();
+    const ano = hoje.getFullYear();
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const dia = String(hoje.getDate()).padStart(2, '0');
+
+    const dataAtual = `${ano}-${mes}-${dia}`;
+
+    document.getElementById('filtro-data-inicio').value = dataAtual;
+    document.getElementById('filtro-data-fim').value = dataAtual;
+  });
+</script>
+
 <body>
 
   <a class="link-pular" href="#conteudo-principal">Pular para o conteúdo</a>
@@ -84,7 +99,7 @@
           </select>
         </div>
 
-        <div class="campo campo-largo">
+        <div class="campo campo-turma">
           <label for="filtro-turma-id">Turma</label>
           <select id="filtro-turma-id" name="turma_id">
             <option value="">Todas as Turmas</option>
@@ -131,7 +146,7 @@
     </section>
   </main>
 
-  <footer class="rodape">SISGED — Évora Dev · SENAI / FIEMG / SESI</footer>
+  <footer class="rodape">SISGED — Évora Dev · FIEMG / SESI / SENAI</footer>
 
   <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
