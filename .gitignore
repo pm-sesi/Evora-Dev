@@ -3,4 +3,4 @@
 .DS_Store
 Thumbs.db
 app/config/config.php
-database/schema.sql
+.database/schema.sql
